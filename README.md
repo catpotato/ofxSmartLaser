@@ -1,7 +1,9 @@
 # ofxSmartLaser
 
-This code is based heavily on Memo's ofxIlda and require both ofxIlda and ofxEtherdream. 
+## Intro
 
-ofxIlda took care of a lot of the headaces of sending points to the laser, but draws in an simple way that can lead to messy drawings.
+This code is based heavily on Memo's ofxIlda, and requires both ofxIlda and ofxEtherdream. 
 
-ofxSmartLaser draws in a smart way.
+ofxIlda took care of a lot of the headaces of sending points to the laser, but draws in an simple way that makes messy drawings.
+
+ofxSmartLaser draws in a smart way to make clean drawings.
