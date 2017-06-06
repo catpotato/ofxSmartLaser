@@ -17,8 +17,13 @@
 namespace Laser {
     
     void normalize(vector <Laser::Poly> resampled_polys, vector <Laser::Poly> & normalized_polys, ofVec2f window_dimensions);
+    
     float ease_func(float t);
+    
     void resample(vector <Laser::Poly> original_polys, vector <Laser::Poly> & resampled_polys, parameters params, Laser::PointPool point_pool);
+    
+    void add_spaces(vector <Laser::Poly> resampled_polys, vector <Laser::Poly> & spaced_polys, parameters params, Laser::PointPool point_pool);
+    
 }
 
 #endif /* laserHelpers_h */

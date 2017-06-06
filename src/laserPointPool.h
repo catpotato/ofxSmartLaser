@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "laserPoly.h"
 #include "laserStructs.h"
+#include <math.h> 
 
 namespace Laser {
 
@@ -21,6 +22,7 @@ namespace Laser {
             vector <Laser::Poly> original_polys;        
             int total_points;
             int point_density;
+            vector <vector <int>> allowed_points;
         
             parameters params;
             float total_perimeter;

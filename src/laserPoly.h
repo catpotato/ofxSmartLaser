@@ -21,6 +21,9 @@ namespace Laser{
             void setup_lines();
             Poly(ofPolyline p, ofColor c);
             Poly();
+        
+            ofVec2f start_point;
+            ofVec2f end_point;
     };
 }
 

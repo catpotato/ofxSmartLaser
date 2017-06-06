@@ -18,6 +18,32 @@ namespace Laser{
             total_perimeter += polys[i].getPerimeter();
         }
         
+        // do a lazy first passthrough of all points
+        
+        int point_count;
+        
+        for(int i = 0; i < polys.size(); i++){
+            
+            Laser::Poly current_poly = polys[i];
+            vector <int> poly_allowed_points;
+            
+            for(int j = 0; j < current_poly.size(); j++){
+                
+                ofVec2f direction = current_poly.lines[j];
+                float length = direction.distance(direction.zero());
+                
+                float pct = length/total_perimeter;
+                int temp_allowed_points = round(pct*(params.max_points - params.blank_points));
+                
+                point_count += temp_allowed_points;
+                poly_allowed_points.push_back(temp_allowed_points);
+                
+            }
+            
+            allowed_points.push_back(poly_allowed_points);
+            
+        }
+        
         // give me the polygons!
         original_polys = polys;
     }
@@ -27,14 +53,7 @@ namespace Laser{
     
         params = _params;
         
-        //total_points = params.allowed_points;
-        
-        
     }
-    
-    /*void PointPool::update_params(params){
-    
-    }*/
     
     int PointPool::get_allowed_points(int poly, int vertex){
         
@@ -43,16 +62,16 @@ namespace Laser{
         
         float pct = length/total_perimeter;
         
-        //cout << int(pct*(params.max_points - params.blank_points)) << endl;
+        if(params.constant_point_per_line){
+            return params.points_per_line;
+        }
+        else{
+            
+            return allowed_points[poly][vertex];
+            //return round(pct*(params.max_points - params.blank_points));
+        }
         
-        return int(pct*(params.max_points - params.blank_points));
         
-        
-        //cout << "length : " << length << endl;
-        
-        //cout << "help i'm trapped in a funciton!!";
-        
-        //return 4;
         
     }
 }

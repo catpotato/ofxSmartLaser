@@ -24,7 +24,7 @@ namespace Laser{
             x = .5*pow(2*t, exp);
         }
         else{
-            x = -.5*pow(2*(t-.5), exp) + 1;
+            x = -.5*pow(2*(t-1), exp) + 1;
         }
         //float x = .5*(2*t)*(2*t);
         return x;
@@ -39,6 +39,7 @@ namespace Laser{
     void resample(vector <Laser::Poly> original_polys, vector <Laser::Poly> & resampled_polys, parameters params, Laser::PointPool point_pool){
         
         // get that squared away
+        
         resampled_polys.clear();
         
         // for each polygon
@@ -60,7 +61,8 @@ namespace Laser{
                 // for each allowed point
                 for(int k = 0; k < allowed_points; k++){
                     
-                    float pct = ((float)k)/((float)(allowed_points-1));
+                    
+                    float pct = ((float)k)/((float)(allowed_points));
                     
                     switch (params.resample_type) {
                             
@@ -70,10 +72,10 @@ namespace Laser{
                             
                         case adjusted:{
                             resampled_poly.addVertex(starting_point + ease_func(pct)*direction);
-                            //cout << "adjusted!" << endl;
                             break;
                         
                         }
+                        
                     }
                     
                 }
@@ -85,8 +87,29 @@ namespace Laser{
         }
         
     }
-
     
+    /*
+     
+     spacer: adds spaces betwixt shapes and specific instructions for how they should be drawn to help minimize overshooting
+     
+     this takes advtange of the fact that resampled polys gives me back still discrete polygons
+     
+     */
+    
+    void add_spaces(vector <Laser::Poly> resampled_polys, vector <Laser::Poly> & spaced_polys, parameters params, Laser::PointPool point_pool){
+        for(int i = 0; i < resampled_polys.size(); i++){
+            vector <Laser::Poly> polys_sans_current = resampled_polys;
+        
+        }
+    
+    }
+    
+    /*
+     
+     noarmalizer: laser takes coordinates from 0 -> 1 so they have to be normalized. they also need to be flipped cause my projector is strange
+     
+     */
+
     void normalize(vector <Laser::Poly> resampled_polys, vector <Laser::Poly> & normalized_polys, ofVec2f window_dimensions){
         
         normalized_polys = resampled_polys;

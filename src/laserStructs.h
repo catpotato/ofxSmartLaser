@@ -10,15 +10,22 @@
 #define laserStructs_h
 
 #include <stdio.h>
+#include "ofxGui.h"
 
 namespace Laser {
     enum resampling {vertex, uniform, adjusted};
     
     struct parameters{
-        int pps;
-        int max_points;
-        int blank_points;
-        resampling resample_type = adjusted;
+        // deafult values for params
+        ofParameter <int> pps = 25000;
+        ofParameter <int> max_points = 500;
+        ofParameter <int> blank_points = 0;
+        ofParameter <resampling> resample_type = adjusted;
+        ofParameter <bool> constant_point_per_line = false;
+        ofParameter <int> points_per_line = 5;
+        
+        bool show_params = true;
+        
     };
 }
 
