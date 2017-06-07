@@ -21,8 +21,10 @@ namespace Laser {
         ofParameter <int> max_points = 500;
         ofParameter <int> blank_points = 0;
         ofParameter <resampling> resample_type = adjusted;
+        ofParameter <int> spacing_points = 5;
         ofParameter <bool> constant_point_per_line = false;
         ofParameter <int> points_per_line = 5;
+        
         
         bool show_params = true;
         

@@ -7,7 +7,6 @@
 //
 
 #include "laserHelpers.h"
-
 namespace Laser{
     
     /*
@@ -96,11 +95,52 @@ namespace Laser{
      
      */
     
-    void add_spaces(vector <Laser::Poly> resampled_polys, vector <Laser::Poly> & spaced_polys, parameters params, Laser::PointPool point_pool){
-        for(int i = 0; i < resampled_polys.size(); i++){
-            vector <Laser::Poly> polys_sans_current = resampled_polys;
+    void connect_the_dots(vector <Laser::Poly> original_polys, Laser::Poly & connected_poly){
         
+        vector <Laser::Poly> nn_polys = original_polys;
+        
+        // start out with the first shape
+        Laser::Poly current_poly = nn_polys[0];
+        
+        // remove first poly form the list so it doesnt decide to connect to itself
+        nn_polys.erase(nn_polys.begin());
+        
+        // for each starting point, except for the last one (because it is special, needs to get back to the starting point)
+        for(int i = 1; i < original_polys.size(); i++){
+            
+            //cout << i << endl;
+            
+            float shortest_distance = 1000000;
+            int shortest_index;
+            
+            // look at the points remaining and find the closest one
+            for(int j = 0; j < nn_polys.size(); j++){
+                
+                float distance = current_poly[0].squareDistance(nn_polys[j][0]);
+                
+                if(distance < shortest_distance){
+                
+                    shortest_distance = distance;
+                    shortest_index = j;
+                    
+                }
+            }
+            
+            // add all of the vertexes from the current poly
+            for(int j = 0 ; j < current_poly.size(); j++) connected_poly.addVertex(current_poly[j]);
+            
+            // move to the next poly for the next round
+            current_poly = nn_polys[shortest_index];
+            
+            // remove nearest neighbor from the list
+            nn_polys.erase(nn_polys.begin() + shortest_index);
         }
+        
+        for(int i = 0; i < current_poly.size(); i++){
+            connected_poly.addVertex(current_poly[i]);
+        }
+        
+        connected_poly.close();
     
     }
     
@@ -124,5 +164,6 @@ namespace Laser{
             }
         }
     }
+    
     
 }

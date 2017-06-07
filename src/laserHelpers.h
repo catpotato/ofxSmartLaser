@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <cmath>
+#include <algorithm>
 #include "laserPoly.h"
 #include "laserPointPool.h"
 
@@ -22,7 +23,7 @@ namespace Laser {
     
     void resample(vector <Laser::Poly> original_polys, vector <Laser::Poly> & resampled_polys, parameters params, Laser::PointPool point_pool);
     
-    void add_spaces(vector <Laser::Poly> resampled_polys, vector <Laser::Poly> & spaced_polys, parameters params, Laser::PointPool point_pool);
+    void connect_the_dots(vector <Laser::Poly> original_polys, Laser::Poly & connected_poly);
     
 }
 

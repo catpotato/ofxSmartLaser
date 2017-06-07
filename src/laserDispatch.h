@@ -33,6 +33,7 @@ namespace Laser {
         vector <ofVec2f> display_points;
         
         vector <Laser::Poly> original_polys;
+        Laser::Poly connected_poly;
         vector <Laser::Poly> resampled_polys;
         vector <Laser::Poly> normalized_polys;
         

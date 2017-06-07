@@ -11,11 +11,9 @@
 //
 //  [ ] make points change color in preview too
 //
-//  [ ] make smarter resampling function that:
-//      [ ] leaves room for blanking
-//      [ ] takes extra points if it can use them
+//  [ ] make spacing between things work
 //
-//  [ ] ofPolyline -> Laser::Poly conversion
+//  [ ] have a way to insert custom handmade paths into the code (NOT dynamically genarated stuff)
 
 
 #include "laserDispatch.h"
@@ -27,11 +25,6 @@ namespace Laser{
         
         etherdream.setup();
         
-        
-        /*gui.add(pps.setup("PPS", 25000, 500, 40000));
-        gui.add(max_points.setup("max points", 500, 0, 1000));
-        gui.add(blank_points.setup("blank points", 10, 0, 500));*/
-        
         gui_parameters.add(params.pps.set("PPS", 25000, 500, 40000));
         gui_parameters.add(params.max_points.set("max points", 500, 0, 1000));
         gui_parameters.add(params.blank_points.set("blank points", 0, 0, 500));
@@ -39,7 +32,6 @@ namespace Laser{
         gui_parameters.add(params.points_per_line.set("points per line", 4, 0, 20));
         
         gui.setup(gui_parameters);
-        //pps.mouseReleased();
         
         
         ofBackground(0);
@@ -63,14 +55,13 @@ namespace Laser{
         // points are not cleared here to leave something to give to the projector
         original_polys = polys;
         
+        // add spaces in between shape drawings
+        Laser::connect_the_dots(original_polys, connected_poly);
+        
         // resample polys
         Laser::resample(original_polys, resampled_polys, params, point_pool);
-        //Laser::resample(/*original_polys, resampled_polys, number_of_points, total_perimeter, !resample*/);
         
-        // add spaces in between shape drawings
-        //Laser::add_spaces(original_polys, spaced_polys, params, point_pool);
-        
-        // normalize this junk
+        // normalize this junk i.e. make them be points from x : 0 -> 1 instead of x : 0 -> ofGetWidth()
         Laser::normalize(resampled_polys, normalized_polys, window_dimensions);
         
         // turn polys into points, use a temporary point so that points is not empty for as long as possible
@@ -110,16 +101,18 @@ namespace Laser{
     void Dispatch::draw(){
         
         // draw points
-        for(int i = 0; i < display_points.size(); i++){
+        /*for(int i = 0; i < display_points.size(); i++){
             ofDrawCircle(display_points[i], 1.3);
-        }
+        }*/
         
         // draw polys
-        for(int i = 0; i < resampled_polys.size(); i++){
+        /*for(int i = 0; i < resampled_polys.size(); i++){
             ofSetColor(resampled_polys[i].color);
             //cout << resampled_polys[i].size() << endl;
             resampled_polys[i].draw();
-        }
+        }*/
+        
+        connected_poly.draw();
         
         // draw gui
         gui.draw();
@@ -127,6 +120,7 @@ namespace Laser{
     }
     
     void Dispatch::update(){
+        
         point_pool.update_params(params);
         set_polys(original_polys);
     }

@@ -20,7 +20,8 @@ namespace Laser{
         
         // do a lazy first passthrough of all points
         
-        int point_count;
+        int used_points = 0;
+        allowed_points.clear();
         
         for(int i = 0; i < polys.size(); i++){
             
@@ -33,9 +34,9 @@ namespace Laser{
                 float length = direction.distance(direction.zero());
                 
                 float pct = length/total_perimeter;
-                int temp_allowed_points = round(pct*(params.max_points - params.blank_points));
+                int temp_allowed_points = round(pct*(params.max_points - params.spacing_points*polys.size()));
                 
-                point_count += temp_allowed_points;
+                used_points += temp_allowed_points;
                 poly_allowed_points.push_back(temp_allowed_points);
                 
             }
@@ -43,6 +44,11 @@ namespace Laser{
             allowed_points.push_back(poly_allowed_points);
             
         }
+        
+        // i could implement giving extra points to smaller lines here, but it really seems like more hassle than it is worth, considering i can just use the dense point thing if it really does make a difference
+        
+        
+        
         
         // give me the polygons!
         original_polys = polys;
@@ -68,7 +74,6 @@ namespace Laser{
         else{
             
             return allowed_points[poly][vertex];
-            //return round(pct*(params.max_points - params.blank_points));
         }
         
         

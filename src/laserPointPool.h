@@ -20,16 +20,12 @@ namespace Laser {
     class PointPool{
         public:
             vector <Laser::Poly> original_polys;        
-            int total_points;
-            int point_density;
             vector <vector <int>> allowed_points;
         
             parameters params;
             float total_perimeter;
-            int spacing_points = 2;
             int points_for_drawing;
-        
-            void setup(parameters _params);
+
             void update_polys(vector <Laser::Poly> polys);
             void update_params(parameters _params);
         
