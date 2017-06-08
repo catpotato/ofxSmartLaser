@@ -1,6 +1,6 @@
 //
 //  laserPoly.cpp
-//  laserProjector
+//  ofxSmartLaser
 //
 //  Created by Clark Addis on 6/1/17.
 //

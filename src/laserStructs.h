@@ -1,6 +1,6 @@
 //
 //  laserStructs.h
-//  multipoly
+//  ofxSmartLaser
 //
 //  Created by Clark Addis on 6/5/17.
 //

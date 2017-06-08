@@ -1,6 +1,6 @@
 //
 //  laserProjection.h
-//  laserText
+//  ofxSmartLaser
 //
 //  Created by Clark Addis on 6/7/17.
 //

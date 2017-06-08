@@ -1,6 +1,6 @@
 //
 //  laserDispatch.cpp
-//  laserProjector
+//  ofxSmartLaser
 //
 //  Created by Clark Addis on 5/31/17.
 //
