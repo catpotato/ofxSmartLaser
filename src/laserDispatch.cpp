@@ -7,7 +7,7 @@
 //
 //  TODO
 //
-//  [ ] have a way to psecify which points are to be the starting points and/or what path they should take
+//  [ ] have a way to specify which points are to be the starting points and/or what path they should take
 //
 
 

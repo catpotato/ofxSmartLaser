@@ -14,7 +14,6 @@
 #include "laserPoly.h"
 #include "laserStructs.h"
 #include "ofxIldaPoint.h"
-//#include "laserPointPool.h"
 
 namespace Laser {
     class Projection : public ofPolyline{
