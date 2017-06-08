@@ -9,7 +9,7 @@
 #include "laserPoly.h"
 namespace Laser{
     Poly::Poly(ofPolyline p, ofColor c) : ofPolyline(p), color(c){ setup_lines(); }
-    Poly::Poly() : ofPolyline(){ cout << "poly created" << endl; setup_lines(); }
+    Poly::Poly() : ofPolyline(){ setup_lines(); }
     
     void Poly::setup_lines(){
         

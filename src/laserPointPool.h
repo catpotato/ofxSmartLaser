@@ -10,6 +10,7 @@
 #define laserPointPool_h
 
 #include <stdio.h>
+#include "laserProjection.h"
 #include "laserPoly.h"
 #include "laserStructs.h"
 #include <math.h> 
@@ -20,7 +21,7 @@ namespace Laser {
     class PointPool{
         public:
             vector <Laser::Poly> original_polys;        
-            vector <vector <int>> allowed_points;
+            vector <int> allowed_points;
         
             parameters params;
             float total_perimeter;
@@ -28,8 +29,9 @@ namespace Laser {
 
             void update_polys(vector <Laser::Poly> polys);
             void update_params(parameters _params);
+            void update(Laser::Projection projection);
         
-            int get_allowed_points(int poly, int vertex);
+            int get_allowed_points(int index);
             int get_blank_points();
         
         

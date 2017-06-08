@@ -9,7 +9,7 @@
 #include "laserPointPool.h"
 namespace Laser{
     
-    void PointPool::update_polys(vector <Laser::Poly> polys){
+    /*void PointPool::update_polys(vector <Laser::Poly> polys){
         
         // update total perimeter
         total_perimeter = 0;
@@ -34,7 +34,7 @@ namespace Laser{
                 float length = direction.distance(direction.zero());
                 
                 float pct = length/total_perimeter;
-                int temp_allowed_points = round(pct*(params.max_points - params.spacing_points*polys.size()));
+                int temp_allowed_points = round(pct*(params.max_points));
                 
                 used_points += temp_allowed_points;
                 poly_allowed_points.push_back(temp_allowed_points);
@@ -48,10 +48,29 @@ namespace Laser{
         // i could implement giving extra points to smaller lines here, but it really seems like more hassle than it is worth, considering i can just use the dense point thing if it really does make a difference
         
         
-        
-        
         // give me the polygons!
         original_polys = polys;
+    }*/
+    
+    
+    void PointPool::update(Laser::Projection projection){
+        
+        total_perimeter = projection.getPerimeter();
+        
+        // do a lazy first passthrough of all points
+        
+        int used_points = 0;
+        allowed_points.clear();
+        
+            
+        for(int i = 0; i < projection.size(); i++){
+            ofVec2f direction = projection.lines[i];
+            float length = direction.distance(direction.zero());
+            
+            float pct = length/total_perimeter;
+            allowed_points.push_back(round(pct*(params.max_points)));
+        }
+        
     }
     
     
@@ -61,19 +80,14 @@ namespace Laser{
         
     }
     
-    int PointPool::get_allowed_points(int poly, int vertex){
-        
-        ofVec2f direction = original_polys[poly].lines[vertex];
-        float length = direction.distance(direction.zero());
-        
-        float pct = length/total_perimeter;
+    int PointPool::get_allowed_points(int index){
         
         if(params.constant_point_per_line){
             return params.points_per_line;
         }
         else{
             
-            return allowed_points[poly][vertex];
+            return allowed_points[index];
         }
         
         
