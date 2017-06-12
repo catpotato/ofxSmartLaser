@@ -47,6 +47,8 @@ namespace Laser {
         ofParameterGroup gui_parameters;
         ofxPanel gui;
         
+        vector <ofxIlda::Point> points;
+        
         // pass a vector of laser polys to the dispatch and it will set them. If you just have one that's fine too. just pass it as a vector with a single element
         void set_polys(vector <Laser::Poly> polys);
         

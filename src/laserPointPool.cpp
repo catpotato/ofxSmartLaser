@@ -16,6 +16,8 @@ namespace Laser{
         
         // do a lazy first passthrough of all points
         
+        number_of_verticies = projection.size();
+        
         int used_points = 0;
         allowed_points.clear();
         
@@ -38,6 +40,7 @@ namespace Laser{
     }
     
     int PointPool::get_allowed_points(int index){
+    
         
         if(params.constant_point_per_line){
             return params.points_per_line;

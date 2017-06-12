@@ -41,30 +41,52 @@ namespace Laser{
         Laser::Projection resampled_projection;
         
         // for each vertex
-        for(int i = 0; i < projection.size(); i++){
+        if(params.resample_type != curves){
             
-            int allowed_points = point_pool.get_allowed_points(i);
+            for(int i = 0; i < projection.size(); i++){
             
-            // make a vector valued function
-            ofVec2f direction = projection.lines[i];
-            ofVec2f starting_point = projection[i];
+                int allowed_points = point_pool.get_allowed_points(i);
             
-            // for each allowed point
-            for(int j = 0; j < allowed_points; j++){
+                // make a vector valued function
+                ofVec2f direction = projection.lines[i];
+                ofVec2f starting_point = projection[i];
+            
+                // for each allowed point
+                for(int j = 0; j < allowed_points; j++){
                 
-                float pct = ((float)j)/((float)(allowed_points));
+                    float pct = ((float)j)/((float)(allowed_points));
                 
-                // swap the colors over << THIS COULD USE SOME REAL WORK
-                resampled_projection.colors.push_back(projection.colors[i]);
+                    // swap the colors over << THIS COULD USE SOME REAL WORK
+                    resampled_projection.colors.push_back(projection.colors[i]);
                 
-                switch (params.resample_type) {
+                    switch (params.resample_type) {
                         
-                    case vertex: resampled_projection.addVertex(projection[i]); break;
+                        case vertex: resampled_projection.addVertex(projection[i]); break;
                         
-                    case uniform: resampled_projection.addVertex(starting_point + pct*direction); break;
+                        case uniform: resampled_projection.addVertex(starting_point + pct*direction); break;
                         
-                    case adjusted: resampled_projection.addVertex(starting_point + ease_func(pct)*direction); break;
+                        case adjusted: resampled_projection.addVertex(starting_point + ease_func(pct)*direction); break;
+                        
+                    }
                 }
+            }
+        }
+        
+        // if rendering curves
+        else{
+            
+            // gives total points to the lowest multiple of the number of points allowed
+            int total_points = point_pool.params.max_points - point_pool.params.max_points%projection.size();
+            
+            // make many loops
+            for(int i = 0; i < total_points/projection.size(); i++){
+                
+                // go through each point in projection and then add it to resampled projection
+                for(int i = 0; i < projection.size(); i++){
+                    resampled_projection.colors.push_back(projection.colors[i]);
+                    resampled_projection.addVertex(projection[i]);
+                }
+            
             }
         }
         

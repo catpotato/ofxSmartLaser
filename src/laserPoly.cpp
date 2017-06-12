@@ -22,4 +22,15 @@ namespace Laser{
             lines.push_back(direction);
         }
     }
+    
+    void Poly::add_vertex(ofPoint pt, Laser::Bezier prev_bez = Laser::Bezier(ofPoint::zero(), 0), Laser::Bezier next_bez = Laser::Bezier(ofPoint::zero(), 0)){
+        
+        this->addVertex(pt);
+        
+        prev_beziers.push_back(prev_bez);
+        next_beziers.push_back(next_bez);
+        
+    
+        
+    };
 }

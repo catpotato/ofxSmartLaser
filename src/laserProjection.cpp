@@ -10,6 +10,7 @@
 
 namespace Laser{
     
+    // called by connect the dots to add a poly to this big poly
     void Projection::add_poly(Laser::Poly poly){
         
         for(int i = 0; i < (int)poly.size(); i++){
@@ -23,6 +24,8 @@ namespace Laser{
             
             this->addVertex(poly[i]);
             colors.push_back(color);
+            
+            // add beziers
         }
         
     };
@@ -51,8 +54,11 @@ namespace Laser{
         vector <ofxIlda::Point> points;
         
         for(int i = 0; i < this->size(); i++){
+            
             ofxIlda::Point point;
-            point.set((*this)[i], this->colors[i]);
+            ofVec2f temp =(*this)[i];
+            
+            point.set(temp, this->colors[i]);
             points.push_back(point);
         }
         
@@ -69,6 +75,7 @@ namespace Laser{
     void Projection::connect_the_dots(vector <Laser::Poly> original_polys){
         
         this->clear();
+        colors.clear();
         
         vector <Laser::Poly> nn_polys = original_polys;
         
@@ -108,6 +115,8 @@ namespace Laser{
         
         // add the last one
         this->add_poly(current_poly);
+        
+        //cout << this->colors[0] << endl;
         
         //connect to the end
         this->finish();

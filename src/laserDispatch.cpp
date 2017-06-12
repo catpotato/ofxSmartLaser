@@ -9,6 +9,14 @@
 //
 //  [ ] have a way to specify which points are to be the starting points and/or what path they should take
 //
+//  [ ] better way than laser polys to send polygons to laser
+//
+//  [ ] better way than laser.update to update things
+//
+//  [ ] make setting up a laser poly better
+//
+//  [ ] better color pushback (see laserHelpers)
+
 
 
 
@@ -69,6 +77,7 @@ namespace Laser{
     
     void Dispatch::project(){
         etherdream.setPPS(params.pps);
-        etherdream.setPoints(normalized_projection.get_points());
+        points = normalized_projection.get_points();
+        etherdream.setPoints(points);
     }
 }

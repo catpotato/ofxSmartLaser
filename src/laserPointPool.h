@@ -34,6 +34,8 @@ namespace Laser {
             int get_allowed_points(int index);
             int get_blank_points();
         
+            int number_of_verticies;
+        
         
     };
 }
