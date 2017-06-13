@@ -19,11 +19,10 @@ namespace Laser{
             ofColor color;
             // this is a clever vector of vectors which just has the direction that the line goes at the given index with starting point at that index in the polygon
             vector <ofVec2f> lines;
-            vector <Laser::Bezier> prev_beziers;
-            vector <Laser::Bezier> next_beziers;
+            vector <Laser::Bezier> beziers;
             void setup_lines();
         
-            void add_vertex(ofPoint pt, Laser::Bezier prev_bezier, Laser::Bezier next_bezier);
+            void add_vertex_bez(ofPoint pt, Laser::Bezier bz);
         
             Poly(ofPolyline p, ofColor c);
             Poly();

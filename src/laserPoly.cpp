@@ -23,14 +23,11 @@ namespace Laser{
         }
     }
     
-    void Poly::add_vertex(ofPoint pt, Laser::Bezier prev_bez = Laser::Bezier(ofPoint::zero(), 0), Laser::Bezier next_bez = Laser::Bezier(ofPoint::zero(), 0)){
+    void Poly::add_vertex_bez(ofPoint pt, Laser::Bezier bz){
         
         this->addVertex(pt);
-        
-        prev_beziers.push_back(prev_bez);
-        next_beziers.push_back(next_bez);
-        
-    
+        bz.p1 = pt;
+        beziers.push_back(bz);
         
     };
 }

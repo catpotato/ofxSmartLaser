@@ -22,27 +22,27 @@ namespace Laser{
             
             else color = poly.color;
             
-            this->addVertex(poly[i]);
-            colors.push_back(color);
-            
-            // add beziers
+            copy(poly, color, i);
         }
         
     };
     
-    void Projection::finish(){
+    void Projection::finish(parameters params){
         //close shape
         this->close();
         // make lines
-        this->setup_lines();
+        this->setup_lines(params);
     }
     
-    void Projection::setup_lines(){
+    void Projection::setup_lines(parameters params){
         
+        // this makes lines for rendering, but also fills in the p2's for the bezier's
         for(int i = 0; i < this->size(); i++){
             
             ofVec2f starting_point = (*this)[i];
             ofVec2f final_point = (*this)[(i+1)%(this->size())];
+            //this->beziers[i].p2 = final_point;
+            this->beziers[i].setup(final_point, params);
             
             ofVec2f direction = final_point - starting_point;
             lines.push_back(direction);
@@ -72,7 +72,7 @@ namespace Laser{
         }
     }
     
-    void Projection::connect_the_dots(vector <Laser::Poly> original_polys){
+    void Projection::connect_the_dots(vector <Laser::Poly> original_polys, parameters params){
         
         this->clear();
         colors.clear();
@@ -116,15 +116,14 @@ namespace Laser{
         // add the last one
         this->add_poly(current_poly);
         
-        //cout << this->colors[0] << endl;
-        
         //connect to the end
-        this->finish();
+        this->finish(params);
         
     }
     
     void Projection::draw_to_screen(parameters params){
-        
+        //cout << "new!";
+        int jim = 0;
         for(int i = 0; i < this->size() - 1; i++){
             
             ofColor color = this->colors[i];
@@ -135,9 +134,19 @@ namespace Laser{
             
             // draw each point
             ofDrawCircle((*this)[i], 1.3);
+            //cout << (*this)[i] << endl;
             // draw each line
-            ofDrawLine((*this)[i], (*this)[i+1]);
+            //ofDrawLine((*this)[i], (*this)[i+1]);
+            if (color == ofColor::white && ((*this)[i] != (*this)[i-1])) jim++;
         }
+        cout << jim << endl;
+    }
+    
+    void Projection::copy(Laser::Poly poly, ofColor color, int index){
+        
+        this->addVertex(poly[index]);
+        this->beziers.push_back(poly.beziers[index]);
+        this->colors.push_back(color);
     }
     
     

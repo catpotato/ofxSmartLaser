@@ -29,6 +29,19 @@ namespace Laser{
         return x;
     }
     
+    float bez_ease_func(float t){
+        //float x = t*t;
+        float x;
+        float exp = 2;
+        if(t < .5){
+            x = .5*pow(2*t, exp);
+        }
+        else{
+            x = -.5*pow(2*(t-1), exp) + 1;
+        }
+        //float x = .5*(2*t)*(2*t);
+        return x;
+    }
     /*
      
      resampler: takes in original polys, modifies them based on paramerters, then spits out the resampled polys
@@ -44,51 +57,81 @@ namespace Laser{
         if(params.resample_type != curves){
             
             for(int i = 0; i < projection.size(); i++){
-            
+                
                 int allowed_points = point_pool.get_allowed_points(i);
             
                 // make a vector valued function
                 ofVec2f direction = projection.lines[i];
                 ofVec2f starting_point = projection[i];
-            
-                // for each allowed point
-                for(int j = 0; j < allowed_points; j++){
                 
-                    float pct = ((float)j)/((float)(allowed_points));
+                // get bezier poly
+                Laser::Bezier bezier = projection.beziers[i];
                 
-                    // swap the colors over << THIS COULD USE SOME REAL WORK
-                    resampled_projection.colors.push_back(projection.colors[i]);
+                // find percentage area that each segment gets
+                if(bezier.exists){
+                    switch (params.bezier_sample_type) {
+                        case exact:
+                            for(int j = 0; j < allowed_points; j++){
+                                
+                                float pct = ((float)j)/((float)(allowed_points));
+                                // get point that is pct into the bezier curve and add it to the poly
+                                resampled_projection.addVertex(bezier.get_point(pct));
+                                resampled_projection.colors.push_back(projection.colors[i]);
+                                
+                            }
+                            break;
+                            
+                        case midpoint:
+
+                            // for each section created by a midpoint
+                            for(int j = 0; j <= params.midpoints; j++){
+                                
+                                int allowed_points_per_bez_sec = allowed_points/(params.midpoints+1);
+
+                                // for the allowed points
+                                for(int k = 0; k < allowed_points_per_bez_sec; k++){
+                                    
+                                    float pct =  ((float)k)/((float)allowed_points_per_bez_sec);
+                                    float step_size = 1/((float)params.midpoints+1);
+                                    
+                                    float adjusted_pct = j*step_size + step_size*ease_func(pct);
+
+                                    resampled_projection.addVertex(bezier.get_point(adjusted_pct));
+                                    resampled_projection.colors.push_back(projection.colors[i]);
+
+                                }
+                                
+                            }
+                            break;
+                    }
+
                 
-                    switch (params.resample_type) {
+                }
+                else{
+                    // for each allowed point
+                    for(int j = 0; j < allowed_points; j++){
                         
-                        case vertex: resampled_projection.addVertex(projection[i]); break;
+                        float pct = ((float)j)/((float)(allowed_points));
                         
-                        case uniform: resampled_projection.addVertex(starting_point + pct*direction); break;
-                        
-                        case adjusted: resampled_projection.addVertex(starting_point + ease_func(pct)*direction); break;
+                        // swap colors over, could use a lot of work
+                        resampled_projection.colors.push_back(projection.colors[i]);
+                        switch (params.resample_type) {
+                                
+                            case vertex: resampled_projection.addVertex(projection[i]); break;
+                                
+                            case uniform: resampled_projection.addVertex(starting_point + pct*direction); break;
+                                
+                            case adjusted: resampled_projection.addVertex(starting_point + ease_func(pct)*direction); break;
+                                
+                        }
                         
                     }
+                
                 }
+            
             }
         }
         
-        // if rendering curves
-        else{
-            
-            // gives total points to the lowest multiple of the number of points allowed
-            int total_points = point_pool.params.max_points - point_pool.params.max_points%projection.size();
-            
-            // make many loops
-            for(int i = 0; i < total_points/projection.size(); i++){
-                
-                // go through each point in projection and then add it to resampled projection
-                for(int i = 0; i < projection.size(); i++){
-                    resampled_projection.colors.push_back(projection.colors[i]);
-                    resampled_projection.addVertex(projection[i]);
-                }
-            
-            }
-        }
         
         return resampled_projection;
     }

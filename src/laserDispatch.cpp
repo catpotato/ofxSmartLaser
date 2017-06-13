@@ -16,6 +16,14 @@
 //  [ ] make setting up a laser poly better
 //
 //  [ ] better color pushback (see laserHelpers)
+//
+//  [ ] make laser not do anything if updating/projectting nothing
+//
+//  [ ] make "add_vertex_bez" better
+//
+//  [ ] improve line setup
+//
+//  [ ] improve parameter handling in laserProjection
 
 
 
@@ -34,6 +42,9 @@ namespace Laser{
         gui_parameters.add(params.blank_points.set("blank points", 0, 0, 500));
         gui_parameters.add(params.constant_point_per_line.set("constant point per line", false));
         gui_parameters.add(params.points_per_line.set("points per line", 4, 1, 20));
+        gui_parameters.add(params.resample_type.set("resampling", 2, 0, 2));
+        gui_parameters.add(params.bezier_sample_type.set("bezier resampling", 1, 0, 1));
+        gui_parameters.add(params.midpoints.set("midpoints", 1, 1, 20));
         
         gui.setup(gui_parameters);
         
@@ -51,7 +62,7 @@ namespace Laser{
         original_polys = polys;
         
         // add spaces in between shape drawings
-        projection.connect_the_dots(original_polys);
+        projection.connect_the_dots(original_polys, params);
         
         // update point pool
         point_pool.update(projection);
@@ -67,6 +78,7 @@ namespace Laser{
     void Dispatch::draw(){
         // draw gui
         gui.draw();
+        //cout << resampled_projection.size() << endl;
         resampled_projection.draw_to_screen(params);
     }
     
