@@ -26,7 +26,6 @@ namespace Laser {
             void setup_lines(parameters params);
             void add_poly(Laser::Poly poly);
             void finish(parameters params);
-            void spew();
 
             void copy(Laser::Poly poly, ofColor color, int index);
             void connect_the_dots(vector <Laser::Poly> original_polys, parameters params);

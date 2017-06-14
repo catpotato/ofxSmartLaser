@@ -35,7 +35,7 @@ namespace Laser {
         vector <Laser::Poly> original_polys;
         
         // intermediate variables for drawing to the laser
-        Laser::Projection projection;
+        Laser::Projection spaced_projection;
         Laser::Projection resampled_projection;
         Laser::Projection normalized_projection;
         

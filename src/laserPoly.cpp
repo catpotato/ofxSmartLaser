@@ -8,7 +8,12 @@
 
 #include "laserPoly.h"
 namespace Laser{
-    Poly::Poly(ofPolyline p, ofColor c) : ofPolyline(p), color(c){ setup_lines(); }
+    Poly::Poly(ofPolyline p, ofColor c) : color(c){
+        
+        for(int i = 0; i < p.size(); i++) add_vertex(p[i]);
+        setup_lines();
+    }
+    
     Poly::Poly() : ofPolyline(){ setup_lines(); }
     
     void Poly::setup_lines(){
@@ -30,4 +35,6 @@ namespace Laser{
         beziers.push_back(bz);
         
     };
+    
+    void Poly::add_vertex(ofPoint pt) { add_vertex_bez(pt, Laser::Bezier(false));}
 }

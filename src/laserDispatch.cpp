@@ -24,6 +24,8 @@
 //  [ ] improve line setup
 //
 //  [ ] improve parameter handling in laserProjection
+//
+//  [ ] make paths into curves??
 
 
 
@@ -32,10 +34,14 @@
 namespace Laser{
     
     void Dispatch::setup(){
+        
+        ofSetFrameRate(60);
+        
+        
         window_dimensions.x = ofGetWidth();
         window_dimensions.y = ofGetHeight();
         
-        etherdream.setup();
+        //etherdream.setup();
         
         gui_parameters.add(params.pps.set("PPS", 25000, 500, 40000));
         gui_parameters.add(params.max_points.set("max points", 500, 5, 1000));
@@ -62,13 +68,13 @@ namespace Laser{
         original_polys = polys;
         
         // add spaces in between shape drawings
-        projection.connect_the_dots(original_polys, params);
-        
+        spaced_projection = connect_the_dots(original_polys, params);
+
         // update point pool
-        point_pool.update(projection);
+        point_pool.update(spaced_projection);
         
         // resample
-        resampled_projection = resample(projection, params, point_pool);
+        resampled_projection = resample(spaced_projection, params, point_pool);
         
         // normalize
         normalized_projection = normalize(resampled_projection, window_dimensions);
@@ -78,7 +84,6 @@ namespace Laser{
     void Dispatch::draw(){
         // draw gui
         gui.draw();
-        //cout << resampled_projection.size() << endl;
         resampled_projection.draw_to_screen(params);
     }
     
@@ -88,8 +93,8 @@ namespace Laser{
     }
     
     void Dispatch::project(){
-        etherdream.setPPS(params.pps);
+        //etherdream.setPPS(params.pps);
         points = normalized_projection.get_points();
-        etherdream.setPoints(points);
+        //etherdream.setPoints(points);
     }
 }

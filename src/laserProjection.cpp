@@ -66,15 +66,11 @@ namespace Laser{
         
     }
     
-    void Projection::spew(){
-        for(int i = 0; i < this->size(); i++){
-            cout << "point : " << (*this)[i] << ", color : " << this->colors[i] << endl;
-        }
-    }
-    
     void Projection::connect_the_dots(vector <Laser::Poly> original_polys, parameters params){
         
+        // clear polyline, since there could be guff in there from before
         this->clear();
+        // same with colors
         colors.clear();
         
         vector <Laser::Poly> nn_polys = original_polys;
@@ -122,7 +118,7 @@ namespace Laser{
     }
     
     void Projection::draw_to_screen(parameters params){
-        //cout << "new!";
+
         int jim = 0;
         for(int i = 0; i < this->size() - 1; i++){
             
@@ -134,12 +130,9 @@ namespace Laser{
             
             // draw each point
             ofDrawCircle((*this)[i], 1.3);
-            //cout << (*this)[i] << endl;
             // draw each line
-            //ofDrawLine((*this)[i], (*this)[i+1]);
             if (color == ofColor::white && ((*this)[i] != (*this)[i-1])) jim++;
         }
-        cout << jim << endl;
     }
     
     void Projection::copy(Laser::Poly poly, ofColor color, int index){
