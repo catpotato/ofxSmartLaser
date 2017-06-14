@@ -10,20 +10,8 @@
 namespace Laser{
     
 
-    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true){cout << cp1 << endl << cp2<<endl;};
-    Bezier::Bezier(ofPoint _p1, ofPoint _cp1, ofPoint _cp2): p1(_p1), cp1(_cp1), cp2(_cp2) {};
+    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true){};
     Bezier::Bezier(bool _exists): exists(_exists){};
-    
-    /*ofVec2f Bezier::get_point(float t){
-    
-        ofVec2f result =    p1*pow((1-t), 3) +
-                            cp1*3*pow((1-t), 2)*t +
-                            cp2*3*(1-t)*pow(t,2) +
-                            p2*pow(t,3);
-        
-        return result;
-        
-    }*/
     
     ofVec2f Bezier::get_point(float t, ofPoint _p1, ofPoint _p2){
         
@@ -44,6 +32,7 @@ namespace Laser{
     }
     
     void Bezier::setup(ofVec2f _p1, ofVec2f _p2, parameters params){
+        //cout << "setup" << endl;
         p1 = _p1;
         p2 = _p2;
         
@@ -64,6 +53,18 @@ namespace Laser{
         
         }
         
+    }
+    
+    void Bezier::draw(){
+        //cout << "drawing!" << endl;
+        ofSetColor(ofColor::green);
+        ofDrawCircle(p1, 1.2);
+        ofDrawCircle(p2, 1.2);
+        
+        ofSetColor(ofColor::red);
+        ofDrawCircle(cp1, 1.2);
+        ofDrawCircle(cp2, 1.2);
+    
     }
     
     

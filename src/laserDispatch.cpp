@@ -39,12 +39,12 @@ namespace Laser{
         
         ofSetFrameRate(60);
         
-        
         window_dimensions.x = ofGetWidth();
         window_dimensions.y = ofGetHeight();
         
         //etherdream.setup();
         
+        // a bunch of gui stuff you have to set up
         gui_parameters.add(params.pps.set("PPS", 25000, 500, 40000));
         gui_parameters.add(params.max_points.set("max points", 500, 5, 1000));
         gui_parameters.add(params.blank_points.set("blank points", 0, 0, 500));
@@ -53,6 +53,8 @@ namespace Laser{
         gui_parameters.add(params.resample_type.set("resampling", 2, 0, 2));
         gui_parameters.add(params.bezier_sample_type.set("bezier resampling", 1, 0, 1));
         gui_parameters.add(params.midpoints.set("midpoints", 1, 1, 20));
+        
+        params.pps.addListener(this, &Dispatch::smoke_weed);
         
         gui.setup(gui_parameters);
         
@@ -69,9 +71,22 @@ namespace Laser{
         // points are not cleared here to leave something to give to the projector
         original_polys = polys;
         
+        update_polys();
+    }
+    
+    void Dispatch::set_polys_ref(vector <Laser::Poly> & polys){
+        
+        // points are not cleared here to leave something to give to the projector
+        original_polys = polys;
+        
+        update_polys();
+    }
+    
+    void Dispatch::update_polys(){
+        
         // add spaces in between shape drawings
         spaced_projection = connect_the_dots(original_polys, params);
-
+        
         // update point pool
         point_pool.update(spaced_projection);
         
@@ -80,6 +95,7 @@ namespace Laser{
         
         // normalize
         normalized_projection = normalize(resampled_projection, window_dimensions);
+        
     }
     
     
@@ -87,16 +103,23 @@ namespace Laser{
         // draw gui
         gui.draw();
         resampled_projection.draw_to_screen(params);
+        for(int i = 0; i < spaced_projection.size(); i++){
+            spaced_projection.beziers[i].draw();
+        }
     }
     
     void Dispatch::update(){
         point_pool.update_params(params);
-        set_polys(original_polys);
+        update_polys();
     }
     
     void Dispatch::project(){
         //etherdream.setPPS(params.pps);
         points = normalized_projection.get_points();
         //etherdream.setPoints(points);
+    }
+    void Dispatch::smoke_weed(int &ejeoifsj){
+    
+        cout << "smoke weed everyday" << endl;
     }
 }

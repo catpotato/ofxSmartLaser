@@ -119,7 +119,7 @@ namespace Laser{
     
     void Projection::draw_to_screen(parameters params){
 
-        int jim = 0;
+        
         for(int i = 0; i < this->size() - 1; i++){
             
             ofColor color = this->colors[i];
@@ -131,7 +131,6 @@ namespace Laser{
             // draw each point
             ofDrawCircle((*this)[i], 1.3);
             // draw each line
-            if (color == ofColor::white && ((*this)[i] != (*this)[i-1])) jim++;
         }
     }
     

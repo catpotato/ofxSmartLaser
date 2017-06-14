@@ -11,7 +11,6 @@ namespace Laser{
     
     
     void PointPool::update(Laser::Projection projection){
-        cout << "c" << endl;
         
         total_perimeter = projection.getPerimeter();
         
