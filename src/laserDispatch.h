@@ -51,7 +51,6 @@ namespace Laser {
         
         // pass a vector of laser polys to the dispatch and it will set them. If you just have one that's fine too. just pass it as a vector with a single element
         void set_polys(vector <Laser::Poly> polys);
-        void set_polys_ref(vector <Laser::Poly> & polys);
         
         // must be called at begining, helps the etherdream setup and puts default parameters for gui in
         void setup();
@@ -62,7 +61,7 @@ namespace Laser {
         // draws to projector
         void project();
         void update_polys();
-        void smoke_weed(int &ejeoifsj);
+        void paramter_changed(ofAbstractParameter &e);
         
     
         

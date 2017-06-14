@@ -42,7 +42,7 @@ namespace Laser{
             ofVec2f starting_point = (*this)[i];
             ofVec2f final_point = (*this)[(i+1)%(this->size())];
             
-            this->beziers[i].setup(starting_point, final_point, params);
+            this->beziers[i].set_midpoints(params);
             
             ofVec2f direction = final_point - starting_point;
             lines.push_back(direction);

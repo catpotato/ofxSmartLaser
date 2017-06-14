@@ -54,7 +54,7 @@ namespace Laser{
         gui_parameters.add(params.bezier_sample_type.set("bezier resampling", 1, 0, 1));
         gui_parameters.add(params.midpoints.set("midpoints", 1, 1, 20));
         
-        params.pps.addListener(this, &Dispatch::smoke_weed);
+        ofAddListener(gui_parameters.parameterChangedE(),this,&Dispatch::paramter_changed);
         
         gui.setup(gui_parameters);
         
@@ -64,6 +64,12 @@ namespace Laser{
         point_pool.update_params(params);
     }
     
+    void Dispatch::paramter_changed(ofAbstractParameter &e){
+        point_pool.update_params(params);
+        update_polys();
+        cout << ofGetElapsedTimeMillis() << endl;
+    }
+    
 
     
     void Dispatch::set_polys(vector <Laser::Poly> polys){
@@ -71,13 +77,7 @@ namespace Laser{
         // points are not cleared here to leave something to give to the projector
         original_polys = polys;
         
-        update_polys();
-    }
-    
-    void Dispatch::set_polys_ref(vector <Laser::Poly> & polys){
-        
-        // points are not cleared here to leave something to give to the projector
-        original_polys = polys;
+        // TODO check if polys are the same
         
         update_polys();
     }
@@ -118,8 +118,5 @@ namespace Laser{
         points = normalized_projection.get_points();
         //etherdream.setPoints(points);
     }
-    void Dispatch::smoke_weed(int &ejeoifsj){
     
-        cout << "smoke weed everyday" << endl;
-    }
 }

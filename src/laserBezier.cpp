@@ -17,8 +17,8 @@ namespace Laser{
         
         p1 = _p1;
         p2 = _p2;
-        cp1 = p1 + cp1_diff;
-        cp2 = p2 + cp2_diff;
+        
+        update_control_points();
         
         
         // the meat of the bezier
@@ -31,14 +31,12 @@ namespace Laser{
         
     }
     
-    void Bezier::setup(ofVec2f _p1, ofVec2f _p2, parameters params){
-        //cout << "setup" << endl;
-        p1 = _p1;
-        p2 = _p2;
-        
-        // these are here so we can define the point relativley to p1 and p2 and as such are able to move around curves easily
-        cp1_diff = cp1 - p1;
-        cp2_diff = cp2 - p2;
+    void Bezier::update_control_points(){
+        cp1 = p1 + cp1_diff;
+        cp2 = p2 + cp2_diff;
+    
+    }
+    void Bezier::set_midpoints(parameters params){
         
         // if we are rendering midpoint style (this is here to prevent unesseacry calculations)
         if(params.bezier_sample_type == midpoint){
@@ -50,8 +48,19 @@ namespace Laser{
                 midpoint_starting_points.push_back(get_point(step_size*i, p1, p2));
                 
             }
-        
+            
         }
+        
+    }
+    
+    void Bezier::setup(ofVec2f _p1, ofVec2f _p2){
+        p1 = _p1;
+        p2 = _p2;
+        
+        // these are here so we can define the point relativley to p1 and p2 and as such are able to move around curves easily
+        cp1_diff = cp1 - p1;
+        cp2_diff = cp2 - p2;
+        
         
     }
     

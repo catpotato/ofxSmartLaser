@@ -28,12 +28,18 @@ namespace Laser{
         }
     }
     
-    void Poly::add_vertex_bez(ofPoint pt, Laser::Bezier bz){
+    void Poly::add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz){
         
-        this->addVertex(pt);
+        this->addVertex(pt1);
+        
+        // make sure no strange values happen
+        if(bz.exists){
+            bz.setup(pt1, pt2);
+        }
+        
         beziers.push_back(bz);
         
     };
     
-    void Poly::add_vertex(ofPoint pt) { add_vertex_bez(pt, Laser::Bezier(false));}
+    void Poly::add_vertex(ofPoint pt) { add_vertex_bez(pt, pt, Laser::Bezier(false));}
 }

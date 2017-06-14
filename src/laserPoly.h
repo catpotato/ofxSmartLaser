@@ -22,7 +22,7 @@ namespace Laser{
             vector <Laser::Bezier> beziers;
             void setup_lines();
         
-            void add_vertex_bez(ofPoint pt, Laser::Bezier bz);
+            void add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz);
             void add_vertex(ofPoint pt);
             //void translate();
         
