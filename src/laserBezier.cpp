@@ -10,11 +10,30 @@
 namespace Laser{
     
 
-    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true){ cout << cp1 << endl << cp2<<endl;};
+    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true){cout << cp1 << endl << cp2<<endl;};
+    Bezier::Bezier(ofPoint _p1, ofPoint _cp1, ofPoint _cp2): p1(_p1), cp1(_cp1), cp2(_cp2) {};
     Bezier::Bezier(bool _exists): exists(_exists){};
     
-    ofVec2f Bezier::get_point(float t){
+    /*ofVec2f Bezier::get_point(float t){
     
+        ofVec2f result =    p1*pow((1-t), 3) +
+                            cp1*3*pow((1-t), 2)*t +
+                            cp2*3*(1-t)*pow(t,2) +
+                            p2*pow(t,3);
+        
+        return result;
+        
+    }*/
+    
+    ofVec2f Bezier::get_point(float t, ofPoint _p1, ofPoint _p2){
+        
+        p1 = _p1;
+        p2 = _p2;
+        cp1 = p1 + cp1_diff;
+        cp2 = p2 + cp2_diff;
+        
+        
+        // the meat of the bezier
         ofVec2f result =    p1*pow((1-t), 3) +
                             cp1*3*pow((1-t), 2)*t +
                             cp2*3*(1-t)*pow(t,2) +
@@ -24,8 +43,13 @@ namespace Laser{
         
     }
     
-    void Bezier::setup(ofVec2f _p2, parameters params){
+    void Bezier::setup(ofVec2f _p1, ofVec2f _p2, parameters params){
+        p1 = _p1;
         p2 = _p2;
+        
+        // these are here so we can define the point relativley to p1 and p2 and as such are able to move around curves easily
+        cp1_diff = cp1 - p1;
+        cp2_diff = cp2 - p2;
         
         // if we are rendering midpoint style (this is here to prevent unesseacry calculations)
         if(params.bezier_sample_type == midpoint){
@@ -34,8 +58,7 @@ namespace Laser{
             for(int i = 0; i < params.midpoints; i++){
                 
                 // starts at zero, goes up by the step size count each time
-                
-                midpoint_starting_points.push_back(get_point(step_size*i));
+                midpoint_starting_points.push_back(get_point(step_size*i, p1, p2));
                 
             }
         

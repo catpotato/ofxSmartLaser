@@ -69,13 +69,21 @@ namespace Laser{
                 
                 // find percentage area that each segment gets
                 if(bezier.exists){
+                    
+                    // saves on calculation
+                    ofVec2f current_point = starting_point;
+                    ofVec2f next_point = starting_point+direction;
+                    
                     switch (params.bezier_sample_type) {
+                            
                         case exact:
+                            // for each point
                             for(int j = 0; j < allowed_points; j++){
                                 
                                 float pct = ((float)j)/((float)(allowed_points));
+                                
                                 // get point that is pct into the bezier curve and add it to the poly
-                                resampled_projection.addVertex(bezier.get_point(pct));
+                                resampled_projection.addVertex(bezier.get_point(pct, current_point, next_point));
                                 resampled_projection.colors.push_back(projection.colors[i]);
                                 
                             }
@@ -94,9 +102,11 @@ namespace Laser{
                                     float pct =  ((float)k)/((float)allowed_points_per_bez_sec);
                                     float step_size = 1/((float)params.midpoints+1);
                                     
+                                    // move through based on easing function
                                     float adjusted_pct = j*step_size + step_size*ease_func(pct);
 
-                                    resampled_projection.addVertex(bezier.get_point(adjusted_pct));
+                                    // add a vertex corresponding to the bezier curve, and add the colot
+                                    resampled_projection.addVertex(bezier.get_point(adjusted_pct, current_point, next_point));
                                     resampled_projection.colors.push_back(projection.colors[i]);
 
                                 }

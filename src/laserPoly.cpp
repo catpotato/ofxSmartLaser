@@ -31,7 +31,6 @@ namespace Laser{
     void Poly::add_vertex_bez(ofPoint pt, Laser::Bezier bz){
         
         this->addVertex(pt);
-        bz.p1 = pt;
         beziers.push_back(bz);
         
     };

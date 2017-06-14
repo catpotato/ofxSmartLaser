@@ -26,6 +26,8 @@
 //  [ ] improve parameter handling in laserProjection
 //
 //  [ ] make paths into curves??
+//
+//  [ ] reimplement blank points
 
 
 
