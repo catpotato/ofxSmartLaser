@@ -28,6 +28,7 @@ namespace Laser{
         }
     }
     
+    
     void Poly::add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz){
         
         this->addVertex(pt1);

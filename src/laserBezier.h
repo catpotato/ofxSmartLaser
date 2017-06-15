@@ -25,6 +25,9 @@ namespace Laser{
         
         public:
         
+            float start_pct;
+            float end_pct;
+        
             ofPoint cp1_diff;
             ofPoint cp2_diff;
         

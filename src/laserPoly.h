@@ -24,6 +24,7 @@ namespace Laser{
         
             void add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz);
             void add_vertex(ofPoint pt);
+            void slice_off_edges();
             //void translate();
         
             Poly(ofPolyline p, ofColor c);

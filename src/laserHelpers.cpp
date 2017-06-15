@@ -167,6 +167,7 @@ namespace Laser{
             // look at the points remaining and find the closest one
             for(int j = 0; j < nn_polys.size(); j++){
                 
+                //cout << nn_polys[j][0] << endl;
                 float distance = current_poly[0].squareDistance(nn_polys[j][0]);
                 
                 if(distance < shortest_distance){
@@ -176,6 +177,7 @@ namespace Laser{
                     
                 }
             }
+            //cout << "f";
             
             // add current poly to connected polys
             spaced_projection.add_poly(current_poly);
@@ -187,16 +189,20 @@ namespace Laser{
             nn_polys.erase(nn_polys.begin() + shortest_index);
         }
         
+        
         // add the last one
         spaced_projection.add_poly(current_poly);
         
         //connect to the end
         spaced_projection.finish(params);
         
+        
         return spaced_projection;
         
     }
     
+    
+
     /*
      
      noarmalizer: laser takes coordinates from 0 -> 1 so they have to be normalized. they also need to be flipped cause my projector is strange

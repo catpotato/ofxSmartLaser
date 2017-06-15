@@ -84,27 +84,41 @@ namespace Laser{
     
     void Dispatch::update_polys(){
         
-        // add spaces in between shape drawings
-        spaced_projection = connect_the_dots(original_polys, params);
+        for(int i = 0; i < original_polys.size(); i++){
+            original_polys[i].setup_lines();
+        }
         
-        // update point pool
-        point_pool.update(spaced_projection);
+        //vector <Laser::Poly> garbo =
+        // slice off edges of polys that are out of the canvas
         
-        // resample
-        resampled_projection = resample(spaced_projection, params, point_pool);
+        sliced_polys = slice_off_edges(original_polys);
         
-        // normalize
-        normalized_projection = normalize(resampled_projection, window_dimensions);
+        // if there are any polygons around, else don't draw them!
+        if(sliced_polys.size()){
+            // add spaces btwn polys
+            spaced_projection = connect_the_dots(slice_off_edges(original_polys), params);
         
+            // update point pool
+            point_pool.update(spaced_projection);
+        
+            // resample
+            resampled_projection = resample(spaced_projection, params, point_pool);
+            
+            // normalize
+            normalized_projection = normalize(resampled_projection, window_dimensions);
+        }
+            
     }
     
     
     void Dispatch::draw(){
         // draw gui
         gui.draw();
-        resampled_projection.draw_to_screen(params);
-        for(int i = 0; i < spaced_projection.size(); i++){
-            spaced_projection.beziers[i].draw();
+        if(sliced_polys.size()){
+            resampled_projection.draw_to_screen(params);
+            for(int i = 0; i < spaced_projection.size(); i++){
+                spaced_projection.beziers[i].draw();
+            }
         }
     }
     

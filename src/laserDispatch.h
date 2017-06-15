@@ -13,6 +13,7 @@
 #include "laserStructs.h"
 #include "ofxGui.h"
 #include "laserProjection.h"
+#include "laserCutoff.h"
 
 #ifndef laserDispatch_h
 #define laserDispatch_h
@@ -33,6 +34,7 @@ namespace Laser {
         
         // polys that were sent from the user
         vector <Laser::Poly> original_polys;
+        vector <Laser::Poly> sliced_polys;
         
         // intermediate variables for drawing to the laser
         Laser::Projection spaced_projection;
