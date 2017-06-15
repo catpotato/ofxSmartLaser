@@ -46,12 +46,13 @@ namespace Laser {
             
             // for each point (minus the last one i guess?) look back at this  LOOK BACK AT THIS YOU CHUM!!!!!
             for(int j = 0; j < current_poly.size(); j++){
-                //cout << j << " : ";
+
                 Vector_Line current_line(current_poly[j], current_poly.lines[j]);
  
             
                 if(current_poly.beziers[j].exists){
-                
+                    final_polys = polys;
+                    //final_poly.add_vertex_bez(current_poly[j], current_poly[j+1], current_poly.beziers[j]);
                     // bezier cutoff
                 }
                 else{

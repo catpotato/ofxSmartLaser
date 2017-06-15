@@ -24,7 +24,7 @@ namespace Laser{
             ofPoint p2;
         
         public:
-        
+
             float start_pct;
             float end_pct;
         
