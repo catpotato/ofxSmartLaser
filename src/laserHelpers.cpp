@@ -177,7 +177,6 @@ namespace Laser{
                     
                 }
             }
-            //cout << "f";
             
             // add current poly to connected polys
             spaced_projection.add_poly(current_poly);
