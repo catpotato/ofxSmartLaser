@@ -118,9 +118,6 @@ namespace Laser{
     }
     
     void Projection::draw_to_screen(parameters params){
-
-        /*cout << "colors: " << colors.size() << endl;
-        cout << "this: "<< this->size() << endl;*/
         
         for(int i = 0; i < this->size() - 1; i++){
             

@@ -48,8 +48,6 @@ namespace Laser {
             for(int j = 0; j < current_poly.size(); j++){
 
                 Vector_Line current_line(current_poly[j], current_poly.lines[j]);
- 
-                //cout << "poly number: " << j << endl;
             
                 if(current_poly.beziers[j].exists){
                     
@@ -66,29 +64,19 @@ namespace Laser {
                     
                     // if first point for bezier is not in the bounding box
                     
-                    cout << "current_poly[j]: " << current_poly[j] << endl;
                     if(in_bounding_box(current_poly[j])){
                         step = 1;
-                        final_poly.add_vertex_bez(current_poly[j], current_poly.lines[j], current_bezier);
-                        cout << "j: " << j << endl;
-                        cout << "final_poly.size(): "<< final_poly.size() << endl;
+                        final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
                     }
                     
-                    cout << "step: "  << step << endl;
-                    
-                    //cout << intersections.size() << " intersections were found" << endl;
-                    cout << "final_poly.size(): "<< final_poly.size() << endl;
+
                     for(int k = 0; k < intersections.size(); k++){
-                        //cout << intersections[k];
                         step++;
-                        cout << "step: "  << step << endl;
-                        
-                        cout << "1 % 2: " << 1%2 << endl;
-                        cout << "step % 2: " << step%2 << endl;
+
                         if(step % 2 == 1){
-                            cout << "HONK" << endl;
+                            
                             // start new shape
-                            final_poly.add_vertex_bez(current_poly[j], current_poly.lines[j], current_bezier);
+                            final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
                             
                             // add start t
                             final_poly.beziers[final_poly.size()-1].start_pct = intersections[k];
@@ -98,12 +86,7 @@ namespace Laser {
                         // step is even, first point is in bounds
                         if(step % 2 == 0){
                             
-                            // add bezier
-                            // final_poly.add_vertex_bez(current_poly[j], current_poly.lines[j], current_bezier);
-                            // check if previous was a bezier??
-                            cout << "step: "  << step << endl;
-                            // add end t on last element
-                            cout << final_poly.size() << endl;
+                            // add end t
                             final_poly.beziers[final_poly.size()-1].end_pct = intersections[k];
                             
                             // end shape
@@ -112,14 +95,14 @@ namespace Laser {
                             
                         }
                         
-                        
-                        
-                        
                     }
                  
                     
+                    //final_polys.push_back(final_poly);
+                    
                     
                 }
+                // not a bezier
                 else{
                 
                     // nothing to do

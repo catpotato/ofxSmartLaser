@@ -19,12 +19,14 @@ namespace Laser{
     
     class Bezier{
         // really not supposed to access these
+        
+        
+        public:
+        
             ofPoint cp1;
             ofPoint cp2;
             ofPoint p1;
             ofPoint p2;
-        
-        public:
 
             float start_pct = 0;
             float end_pct = 1;

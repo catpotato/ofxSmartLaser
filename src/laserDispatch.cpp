@@ -97,6 +97,7 @@ namespace Laser{
         
         // if there are any polygons around, else don't draw them!
         if(sliced_polys.size()){
+            
             // add spaces btwn polys
             spaced_projection = connect_the_dots(slice_off_edges(original_polys), params);
         
@@ -116,10 +117,14 @@ namespace Laser{
     void Dispatch::draw(){
         // draw gui
         gui.draw();
+        //spaced_projection.draw();
         if(sliced_polys.size()){
             resampled_projection.draw_to_screen(params);
             for(int i = 0; i < spaced_projection.size(); i++){
                 spaced_projection.beziers[i].draw();
+                /*ofSetColor(ofColor::yellow);
+                ofDrawCircle(spaced_projection.beziers[i].cp1, 5);
+                ofDrawCircle(spaced_projection.beziers[i].cp2, 5);*/
             }
         }
     }

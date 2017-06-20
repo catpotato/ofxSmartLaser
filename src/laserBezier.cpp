@@ -14,15 +14,17 @@ namespace Laser{
     Bezier::Bezier(bool _exists): exists(_exists){};
     
     ofVec2f Bezier::get_point(float t, ofPoint _p1, ofPoint _p2){
-        
+    
         p1 = _p1;
         p2 = _p2;
         
         update_control_points();
         
+        ofSetColor(255, 255, 0);
+        ofDrawCircle(cp1, 5);
+        
         float t_range = end_pct - start_pct;
         float pct = t* t_range + start_pct;
-        
         
         // the meat of the bezier
         ofVec2f result =    p1*pow((1-pct), 3) +
@@ -68,7 +70,7 @@ namespace Laser{
     }
     
     void Bezier::draw(){
-        //cout << "drawing!" << endl;
+
         ofSetColor(ofColor::green);
         ofDrawCircle(p1, 1.2);
         ofDrawCircle(p2, 1.2);
@@ -81,15 +83,12 @@ namespace Laser{
     
     vector <float> Bezier::get_ts_from_x(float x){
         
-        //cout << "x: " << endl;
-        
         // just so that its easier to interface with math stuff
         double p_0 = p1.x;
         double p_1 = p1.x + cp1_diff.x;
         double p_2 = p2.x + cp2_diff.x;
         double p_3 = p2.x;
         
-        //cout << "p0: " << p_0 << " p1: " << p_1 << " p2: " << p_2 << " p3: " << p_3 << endl;
         
         // find a, b, c, d
         double a = -p_0 + 3*p_1 - 3*p_2 + p_3;
@@ -97,11 +96,8 @@ namespace Laser{
         double c = -3*p_0 + 3*p_1;
         double d = p_0 - x;
         
-        //cout << "a " << a << " b: " << b << " c: " << c << " d: " << d + x << endl;
-        
         double roots_arr[3];
         int number_of_roots = SolveP3(roots_arr, b/a, c/a, d/a);
-        //cout << "number of roots: " << number_of_roots << endl;
     
         vector <float> roots;
         
@@ -113,15 +109,11 @@ namespace Laser{
     
     vector <float> Bezier::get_ts_from_y(float y){
         
-        //cout << "y: " << endl;
-        
         // just so that its easier to interface with math stuff
         double p_0 = p1.y;
         double p_1 = p1.y + cp1_diff.y;
         double p_2 = p2.y + cp2_diff.y;
         double p_3 = p2.y;
-        
-        //cout << "p0: " << p_0 << " p1: " << p_1 << " p2: " << p_2 << " p3: " << p_3 << endl;
         
         // find a, b, c, d
         double a = -p_0 + 3*p_1 - 3*p_2 + p_3;
@@ -129,11 +121,8 @@ namespace Laser{
         double c = -3*p_0 + 3*p_1;
         double d = p_0 - y;
         
-        //cout << "a " << a << " b: " << b << " c: " << c << " d: " << d + y << endl;
-        
         double roots_arr[3];
         int number_of_roots = SolveP3(roots_arr, b/a, c/a, d/a);
-        //cout << "number of roots: " << number_of_roots << endl;
         
         vector <float> roots;
         
@@ -185,9 +174,8 @@ namespace Laser{
         
         for(int i = 0; i < intersections.size(); i++) for(int j = 0; j < intersections[i].size(); j++){
             
-            //cout << "intersections[i][j]: " << intersections[i][j] << endl;
             if(valid(intersections[i][j], current_point, current_line)){
-                //cout << "at t = " << intersections[i][j] << " the point of intersection is " << get_point(intersections[i][j], current_point, current_point+current_line) << endl;
+                
                 final_intersections.push_back(intersections[i][j]);
                 
             }

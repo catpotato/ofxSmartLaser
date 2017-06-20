@@ -83,7 +83,9 @@ namespace Laser{
                                 float pct = ((float)j)/((float)(allowed_points));
                                 
                                 // get point that is pct into the bezier curve and add it to the poly
+                                
                                 resampled_projection.addVertex(bezier.get_point(pct, current_point, next_point));
+                                
                                 resampled_projection.colors.push_back(projection.colors[i]);
                                 
                             }
@@ -105,10 +107,10 @@ namespace Laser{
                                     // move through based on easing function
                                     float adjusted_pct = j*step_size + step_size*ease_func(pct);
 
-                                    // add a vertex corresponding to the bezier curve, and add the colot
+                                    // add a vertex corresponding to the bezier curve, and add the color
                                     resampled_projection.addVertex(bezier.get_point(adjusted_pct, current_point, next_point));
                                     resampled_projection.colors.push_back(projection.colors[i]);
-
+                                    
                                 }
                                 
                             }
@@ -149,7 +151,6 @@ namespace Laser{
     Laser::Projection connect_the_dots(vector <Laser::Poly> original_polys, parameters params){
         
         Laser::Projection spaced_projection;
- 
         
         vector <Laser::Poly> nn_polys = original_polys;
         
@@ -167,7 +168,6 @@ namespace Laser{
             // look at the points remaining and find the closest one
             for(int j = 0; j < nn_polys.size(); j++){
                 
-                //cout << nn_polys[j][0] << endl;
                 float distance = current_poly[0].squareDistance(nn_polys[j][0]);
                 
                 if(distance < shortest_distance){
