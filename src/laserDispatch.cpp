@@ -11,8 +11,6 @@
 //
 //  [ ] better way than laser polys to send polygons to laser
 //
-//  [ ] better way than laser.update to update things
-//
 //  [ ] make setting up a laser poly better
 //
 //  [ ] better color pushback (see laserHelpers)
@@ -28,6 +26,10 @@
 //  [ ] make paths into curves??
 //
 //  [ ] reimplement blank points
+//
+//  [ ] make allocator give different amounts of points to curves
+//
+//  [ ] fix color bleed
 
 
 

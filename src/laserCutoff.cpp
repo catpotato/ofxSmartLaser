@@ -53,7 +53,7 @@ namespace Laser {
             
                 if(current_poly.beziers[j].exists){
                     
-                    final_polys = polys;
+                    //final_polys = polys;
                     
                     // bezier cutoff
                     Laser::Bezier current_bezier = current_poly.beziers[j];
@@ -61,54 +61,62 @@ namespace Laser {
                     // find intersection between this bezier and the lines
                     vector <float> intersections = current_bezier.get_valid_intersections(current_poly[j], current_poly.lines[j]);
                     
-                    cout << intersections.size();
+                    // intialize for use in loop
+                    int step = 0;
                     
+                    // if first point for bezier is not in the bounding box
+                    
+                    cout << "current_poly[j]: " << current_poly[j] << endl;
+                    if(in_bounding_box(current_poly[j])){
+                        step = 1;
+                        final_poly.add_vertex_bez(current_poly[j], current_poly.lines[j], current_bezier);
+                        cout << "j: " << j << endl;
+                        cout << "final_poly.size(): "<< final_poly.size() << endl;
+                    }
+                    
+                    cout << "step: "  << step << endl;
+                    
+                    //cout << intersections.size() << " intersections were found" << endl;
+                    cout << "final_poly.size(): "<< final_poly.size() << endl;
                     for(int k = 0; k < intersections.size(); k++){
-                        /*ofVec2f pt = current_bezier.get_point(intersections[k], current_poly[j], current_poly.lines[j]);
-                        ofSetColor(255, 0, 0);
-                        ofDrawCircle(pt,4);*/
-                        /*cout << k << "th intersection" << endl;
-                        cout << intersections[k] << endl;*/
+                        //cout << intersections[k];
+                        step++;
+                        cout << "step: "  << step << endl;
+                        
+                        cout << "1 % 2: " << 1%2 << endl;
+                        cout << "step % 2: " << step%2 << endl;
+                        if(step % 2 == 1){
+                            cout << "HONK" << endl;
+                            // start new shape
+                            final_poly.add_vertex_bez(current_poly[j], current_poly.lines[j], current_bezier);
+                            
+                            // add start t
+                            final_poly.beziers[final_poly.size()-1].start_pct = intersections[k];
+                            
+                        }
+                        
+                        // step is even, first point is in bounds
+                        if(step % 2 == 0){
+                            
+                            // add bezier
+                            // final_poly.add_vertex_bez(current_poly[j], current_poly.lines[j], current_bezier);
+                            // check if previous was a bezier??
+                            cout << "step: "  << step << endl;
+                            // add end t on last element
+                            cout << final_poly.size() << endl;
+                            final_poly.beziers[final_poly.size()-1].end_pct = intersections[k];
+                            
+                            // end shape
+                            final_polys.push_back(final_poly);
+                            final_poly.clear();
+                            
+                        }
+                        
+                        
+                        
                         
                     }
-                    // cout << intersections.size() << endl;
-                    
-                    switch(intersections.size()){
-                    
-                        case 0:{
-                            // add vertex
-                            final_poly.addVertex(current_poly[j]);
-                            // copy over bezier
-                            final_poly.beziers.push_back(current_bezier);
-                            break;
-        
-                        }
-                            
-                            
-                        case 1:{
-                            // find out if its going out to in or in to out
-                            
-                            break;
-                            
-                        }
-                            
-                        case 2:{
-                            
-                            break;
-                            
-                        }
-                            
-                        case 3:{
-                            
-                            break;
-                            
-                        }
-                            
-                    }
-                    
-                    
-                    
-                    
+                 
                     
                     
                 }
