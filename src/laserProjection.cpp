@@ -1,4 +1,4 @@
-  //
+//
 //  laserProjection.cpp
 //  ofxSmartLaser
 //

@@ -49,22 +49,74 @@ namespace Laser {
 
                 Vector_Line current_line(current_poly[j], current_poly.lines[j]);
  
+                //cout << "poly number: " << j << endl;
             
                 if(current_poly.beziers[j].exists){
+                    
                     final_polys = polys;
-                    //final_poly.add_vertex_bez(current_poly[j], current_poly[j+1], current_poly.beziers[j]);
+                    
                     // bezier cutoff
+                    Laser::Bezier current_bezier = current_poly.beziers[j];
+                    
+                    // find intersection between this bezier and the lines
+                    vector <float> intersections = current_bezier.get_valid_intersections(current_poly[j], current_poly.lines[j]);
+                    
+                    cout << intersections.size();
+                    
+                    for(int k = 0; k < intersections.size(); k++){
+                        /*ofVec2f pt = current_bezier.get_point(intersections[k], current_poly[j], current_poly.lines[j]);
+                        ofSetColor(255, 0, 0);
+                        ofDrawCircle(pt,4);*/
+                        /*cout << k << "th intersection" << endl;
+                        cout << intersections[k] << endl;*/
+                        
+                    }
+                    // cout << intersections.size() << endl;
+                    
+                    switch(intersections.size()){
+                    
+                        case 0:{
+                            // add vertex
+                            final_poly.addVertex(current_poly[j]);
+                            // copy over bezier
+                            final_poly.beziers.push_back(current_bezier);
+                            break;
+        
+                        }
+                            
+                            
+                        case 1:{
+                            // find out if its going out to in or in to out
+                            
+                            break;
+                            
+                        }
+                            
+                        case 2:{
+                            
+                            break;
+                            
+                        }
+                            
+                        case 3:{
+                            
+                            break;
+                            
+                        }
+                            
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
                 }
                 else{
                 
-                    // normal cutoff
-                    if(current_line.completely_inside()) {
-                        final_poly.add_vertex(current_poly[j]);
-                        //cout << "completely inside" << endl;
-                    }
-                
-                    // don't render anything
-                    //else if(current_line.completely_outside()); //cout << "completely outside" << endl;
+                    // nothing to do
+                    if(current_line.completely_inside()) final_poly.add_vertex(current_poly[j]);
+
                     
                     // figure out if there are one or two points of intersection
                     else{
@@ -73,11 +125,9 @@ namespace Laser {
                         
                         // a single intersection
                         if(intersections.size() == 1){
-                            //cout << "1 intersection" << endl;
+                            
                             // if current point is inside, means that intersection is next point, need to end a poly
                             if(in_bounding_box(current_poly[j])){
-                                
-                                //cout << "this point is inside" << endl;
                                 
                                 final_poly.add_vertex(current_poly[j]);
                                 final_poly.add_vertex(intersections[0]);
@@ -96,32 +146,24 @@ namespace Laser {
                         
                         // two intersections, only one possibly scenario, so need to start a new shape, add closer point, then add other point, then close shape
                         if(intersections.size() == 2){
-                            //cout << "2 intersections detected" << endl;
                         
                             vector <ofVec2f> ordered_points = order_points(intersections, current_poly[j]);
-                            
-                            cout << "0 : " << ordered_points[0] << endl;
-                            cout << "1 : " << ordered_points[1] << endl;
+            
                             final_poly.add_vertex(ordered_points[0]);
                             final_poly.add_vertex(ordered_points[1]);
 
                             final_polys.push_back(final_poly);
                             final_poly.clear();
-                        
-                        
+            
                         }
-                        
-                    
                     }
-                    
                 }
-                
             }
-            if(in_bounding_box(current_poly[current_poly.size() - 1])){
-                final_polys.push_back(final_poly);
-            }
+            
+            if(in_bounding_box(current_poly[current_poly.size() - 1])) final_polys.push_back(final_poly);
         
         }
+        //final_polys = polys;
         return final_polys;
         
     
@@ -198,6 +240,7 @@ namespace Laser {
         point = ofVec2f(x,y);
         
     }
+    
     void Intersection::set_y(float y){
         
         float t = (y - line.starting_point.y)/line.direction.y;
@@ -221,6 +264,8 @@ namespace Laser {
         
         
     }
+    
+    
     vector <ofVec2f> order_points(vector <ofVec2f> intersections, ofVec2f pt){
         
         vector <ofVec2f> ordered_points;

@@ -10,9 +10,7 @@
 namespace Laser{
     
 
-    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true){
-        
-    };
+    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true){};
     Bezier::Bezier(bool _exists): exists(_exists){};
     
     ofVec2f Bezier::get_point(float t, ofPoint _p1, ofPoint _p2){
@@ -81,6 +79,125 @@ namespace Laser{
     
     }
     
+    vector <float> Bezier::get_ts_from_x(float x){
+        
+        //cout << "x: " << endl;
+        
+        // just so that its easier to interface with math stuff
+        double p_0 = p1.x;
+        double p_1 = p1.x + cp1_diff.x;
+        double p_2 = p2.x + cp2_diff.x;
+        double p_3 = p2.x;
+        
+        //cout << "p0: " << p_0 << " p1: " << p_1 << " p2: " << p_2 << " p3: " << p_3 << endl;
+        
+        // find a, b, c, d
+        double a = -p_0 + 3*p_1 - 3*p_2 + p_3;
+        double b = 3*p_0  - 6*p_1 + 3*p_2;
+        double c = -3*p_0 + 3*p_1;
+        double d = p_0 - x;
+        
+        //cout << "a " << a << " b: " << b << " c: " << c << " d: " << d + x << endl;
+        
+        double roots_arr[3];
+        int number_of_roots = SolveP3(roots_arr, b/a, c/a, d/a);
+        //cout << "number of roots: " << number_of_roots << endl;
     
+        vector <float> roots;
+        
+        for(int i = 0; i < number_of_roots; i++) roots.push_back(roots_arr[i]);
+        
+        return roots;
+        
+    }
+    
+    vector <float> Bezier::get_ts_from_y(float y){
+        
+        //cout << "y: " << endl;
+        
+        // just so that its easier to interface with math stuff
+        double p_0 = p1.y;
+        double p_1 = p1.y + cp1_diff.y;
+        double p_2 = p2.y + cp2_diff.y;
+        double p_3 = p2.y;
+        
+        //cout << "p0: " << p_0 << " p1: " << p_1 << " p2: " << p_2 << " p3: " << p_3 << endl;
+        
+        // find a, b, c, d
+        double a = -p_0 + 3*p_1 - 3*p_2 + p_3;
+        double b = 3*p_0  - 6*p_1 + 3*p_2;
+        double c = -3*p_0 + 3*p_1;
+        double d = p_0 - y;
+        
+        //cout << "a " << a << " b: " << b << " c: " << c << " d: " << d + y << endl;
+        
+        double roots_arr[3];
+        int number_of_roots = SolveP3(roots_arr, b/a, c/a, d/a);
+        //cout << "number of roots: " << number_of_roots << endl;
+        
+        vector <float> roots;
+        
+        for(int i = 0; i < number_of_roots; i++) roots.push_back(roots_arr[i]);
+        
+        return roots;
+        
+    }
+    
+    bool Bezier::valid(float t, ofVec2f current_point, ofVec2f current_line){
+    
+        // make sure t is btwn 0 and 1;
+        if(t < 0) return false;
+        if(t > 1) return false;
+        
+        // get the value of the bez
+        /*ofVec2f pt = this->get_point(t, current_point, current_point + current_line);
+        
+        if(pt.x < 0) return false;
+        if(pt.x > ofGetWidth()) return false;
+        if(pt.y < 0) return false;
+        if(pt.y > ofGetHeight()) return false;*/
+        
+        return true;
+        
+    }
+    
+    vector <float> Bezier::get_valid_intersections(ofVec2f current_point, ofVec2f current_line){
+        
+        // go through each case and find the answer
+        // x = 0                y = ?
+        // x = ofGetWidth()     y = ?
+        // x = ?                y = 0
+        // x = ?                y = ofGetHeight
+        
+        
+        p1 = current_point;
+        p2 = current_point + current_line;
+        
+        
+        // get t from x
+        vector <vector <float>> intersections;
+        intersections.push_back(get_ts_from_y(0));
+        intersections.push_back(get_ts_from_y(ofGetHeight()));
+        intersections.push_back(get_ts_from_x(0));
+        intersections.push_back(get_ts_from_x(ofGetWidth()));
+                                
+        vector <float> final_intersections;
+        
+        for(int i = 0; i < intersections.size(); i++) for(int j = 0; j < intersections[i].size(); j++){
+            
+            //cout << "intersections[i][j]: " << intersections[i][j] << endl;
+            if(valid(intersections[i][j], current_point, current_line)){
+                //cout << "at t = " << intersections[i][j] << " the point of intersection is " << get_point(intersections[i][j], current_point, current_point+current_line) << endl;
+                final_intersections.push_back(intersections[i][j]);
+                
+            }
+            
+        }
+        
+        return final_intersections;
+    
+    }
+                                
+                            
     
 }

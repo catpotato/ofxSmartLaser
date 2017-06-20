@@ -13,6 +13,7 @@
 #include <cmath>
 #include "ofMain.h"
 #include "laserStructs.h"
+#include "poly34.h"
 
 namespace Laser{
     
@@ -25,8 +26,8 @@ namespace Laser{
         
         public:
 
-            float start_pct;
-            float end_pct;
+            float start_pct = 0;
+            float end_pct = 1;
         
             ofPoint cp1_diff;
             ofPoint cp2_diff;
@@ -43,6 +44,11 @@ namespace Laser{
             void update_control_points();
         
             void draw();
+        
+            vector <float> get_valid_intersections(ofVec2f current_point, ofVec2f current_line);
+            vector <float> get_ts_from_x(float x);
+            vector <float> get_ts_from_y(float y);
+            bool valid(float t, ofVec2f current_point, ofVec2f current_line);
         
         
         

@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include "ofMain.h"
 #include "laserProjection.h"
+#include "laserCrawler.h"
+#include "laserBezier.h"
 
 namespace Laser{
     vector <Laser::Poly> slice_off_edges(vector <Laser::Poly> polys);
@@ -30,21 +32,29 @@ namespace Laser{
             bool completely_inside();
             bool completely_outside();
         
-        vector <ofVec2f> get_valid_intersections();
+            vector <ofVec2f> get_valid_intersections();
         
         
     };
     
     class Intersection{
-    public:
-        Intersection(Vector_Line l);
         
-        ofVec2f point;
-        Vector_Line line;
-        bool valid = true;
+        public:
         
-        void set_x(float x);
-        void set_y(float y);
+            Intersection(Vector_Line l);
+            //Intersection(Bezier b);
+        
+            ofVec2f point;
+            vector <ofVec2f> points;
+            Vector_Line line;
+            //Vector_Line bezier;
+            bool valid = true;
+        
+            void set_x(float x);
+            void set_y(float y);
+        
+        
+        
         
     };
     
