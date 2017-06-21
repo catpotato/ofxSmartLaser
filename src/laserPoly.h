@@ -31,6 +31,8 @@ namespace Laser{
             Poly();
         
             void reset();
+        
+            ofVec2f get_starting_point();
     };
 }
 

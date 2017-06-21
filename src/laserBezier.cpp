@@ -193,7 +193,7 @@ namespace Laser{
     
     void Bezier::spew(){
     
-        cout /*<< "p1 : " << p1 << ", cp1_diff + p1 : " << cp1_diff + p1 << ", p2 : " << p2 << ", cp2_diff + p2 : " << cp2_diff + p2*/ << ", start pct: " << start_pct << ", end pct: " << end_pct << endl;
+        cout << "p1 : " << p1 /*<< ", cp1_diff + p1 : " << cp1_diff + p1 */<< ", p2 : " << p2 /*<< ", cp2_diff + p2 : " << cp2_diff + p2*/ /*<< ", start pct: " << start_pct << ", end pct: " << end_pct*/ << endl;
     }
                                 
                             

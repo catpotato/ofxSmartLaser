@@ -17,14 +17,16 @@ namespace Laser{
     Poly::Poly() : ofPolyline(){ setup_lines(); }
     
     void Poly::setup_lines(){
-        
-        for(int i = 0; i < this->size(); i++){
+        // make sure they aren't already full
+        if(!lines.size()){
+            for(int i = 0; i < this->size(); i++){
             
-            ofVec2f starting_point = (*this)[i];
-            ofVec2f final_point = (*this)[(i+1)%(this->size())];
+                ofVec2f starting_point = (*this)[i];
+                ofVec2f final_point = (*this)[(i+1)%(this->size())];
             
-            ofVec2f direction = final_point - starting_point;
-            lines.push_back(direction);
+                ofVec2f direction = final_point - starting_point;
+                lines.push_back(direction);
+            }
         }
     }
     
@@ -42,6 +44,18 @@ namespace Laser{
         beziers.push_back(bz);
         
     };
+    
+    ofVec2f Poly::get_starting_point(){
+        
+        setup_lines();
+    
+        if(beziers[0].exists) return beziers[0].get_point(beziers[0].start_pct, (*this)[0], (*this)[0] + this->lines[0]);
+            
+        return (*this)[0];
+        
+        
+        
+    }
     
     void Poly::add_vertex(ofPoint pt) { add_vertex_bez(pt, pt, Laser::Bezier(false));}
 }

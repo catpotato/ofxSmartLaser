@@ -67,15 +67,18 @@ namespace Laser {
                     //cout << "bezier starting point: " << current_poly[j] << endl;
                     if(in_bounding_box(current_poly[j])){
                         step = 1;
+                        //cout << "adding start bez" << endl;
                         final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
                     }
-                    cout << "point: " << j << endl;
+                    
 
                     for(int k = 0; k < intersections.size(); k++){
-                        cout << "intersection: " << k << endl;
+                        //cout << "point: " << j << endl;
+                        //cout << "intersection: " << k << endl;
                         //cout << "intersections[k]: " << current_bezier.get_point(intersections[k], current_poly[j], current_poly[j]+current_poly.lines[j]) << endl;
                         
                         step++;
+                        // cout << "step: " << step << endl;
                         //cout << "shape: " << final_polys.size() << " step: " << step << endl;
                         if(step % 2 == 1){
                             
@@ -98,17 +101,19 @@ namespace Laser {
                             //final_poly.beziers[final_poly.size()-1].spew();
                             
                             // end shape
+                            final_poly.add_vertex(current_poly[j]+current_poly.lines[j]);
                             final_polys.push_back(final_poly);
                             Laser::Poly p;
                             final_poly = p;
-                            cout << final_poly.size() << endl;
+                            //cout << final_poly.size() << endl;
                             
                         }
                         
                     }
                  
                     
-                    //final_polys.push_back(final_poly);
+                    // if you are the last bezier, add the last point on
+                
                     
                     
                 }

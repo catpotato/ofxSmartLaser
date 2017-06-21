@@ -101,7 +101,7 @@ namespace Laser{
             // slice off touches with border
             //vector <Laser::Poly> sliced_polys = slice_off_edges(original_polys);
             
-            /*for(int i = 0; i < sliced_polys.size(); i++){
+           /*for(int i = 0; i < sliced_polys.size(); i++){
                 
                 
                 Laser::Poly current_poly = sliced_polys[i];
@@ -110,6 +110,8 @@ namespace Laser{
                     cout << "shape: " << i << ", vertex: " << j << endl;
                 
                     current_poly.beziers[j].spew();
+                    current_poly.setup_lines();
+                    cout << "next point:" << current_poly.lines[j] + current_poly[j] << endl;
                 
                 }
             

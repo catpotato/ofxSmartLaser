@@ -168,7 +168,7 @@ namespace Laser{
             // look at the points remaining and find the closest one
             for(int j = 0; j < nn_polys.size(); j++){
                 
-                float distance = current_poly[0].squareDistance(nn_polys[j][0]);
+                float distance = current_poly.get_starting_point().squareDistance(nn_polys[j].get_starting_point());
                 
                 if(distance < shortest_distance){
                     
