@@ -64,34 +64,44 @@ namespace Laser {
                     
                     // if first point for bezier is not in the bounding box
                     
+                    //cout << "bezier starting point: " << current_poly[j] << endl;
                     if(in_bounding_box(current_poly[j])){
                         step = 1;
                         final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
                     }
-                    
+                    cout << "point: " << j << endl;
 
                     for(int k = 0; k < intersections.size(); k++){
+                        cout << "intersection: " << k << endl;
+                        //cout << "intersections[k]: " << current_bezier.get_point(intersections[k], current_poly[j], current_poly[j]+current_poly.lines[j]) << endl;
+                        
                         step++;
-
+                        //cout << "shape: " << final_polys.size() << " step: " << step << endl;
                         if(step % 2 == 1){
                             
                             // start new shape
                             final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
                             
+                            //cout << " adding a start t" << endl;
                             // add start t
                             final_poly.beziers[final_poly.size()-1].start_pct = intersections[k];
+                            //final_poly.beziers[final_poly.size()-1].spew();
                             
                         }
                         
                         // step is even, first point is in bounds
                         if(step % 2 == 0){
                             
+                            //cout << " adding an end t" << endl;
                             // add end t
                             final_poly.beziers[final_poly.size()-1].end_pct = intersections[k];
+                            //final_poly.beziers[final_poly.size()-1].spew();
                             
                             // end shape
                             final_polys.push_back(final_poly);
-                            final_poly.clear();
+                            Laser::Poly p;
+                            final_poly = p;
+                            cout << final_poly.size() << endl;
                             
                         }
                         
@@ -102,6 +112,7 @@ namespace Laser {
                     
                     
                 }
+                
                 // not a bezier
                 else{
                 
@@ -119,7 +130,7 @@ namespace Laser {
                             
                             // if current point is inside, means that intersection is next point, need to end a poly
                             if(in_bounding_box(current_poly[j])){
-                                
+                                //cout << "hey, make the lines send empty beziers why don't cha" << enl
                                 final_poly.add_vertex(current_poly[j]);
                                 final_poly.add_vertex(intersections[0]);
                                 
@@ -127,7 +138,9 @@ namespace Laser {
                                 final_polys.push_back(final_poly);
                                 
                                 // clears poly for next person to use
-                                final_poly.clear();
+                                // TODO cout << HI THIS IS GOING TO BE A PROBLEM!!!!!!
+                                Laser::Poly p;
+                                final_poly = p;
                                 
                             }
                             // if current point is outside, means we need to start a new shape with intersection as first point
@@ -144,7 +157,8 @@ namespace Laser {
                             final_poly.add_vertex(ordered_points[1]);
 
                             final_polys.push_back(final_poly);
-                            final_poly.clear();
+                            Laser::Poly p;
+                            final_poly = p;
             
                         }
                     }
@@ -154,6 +168,10 @@ namespace Laser {
             if(in_bounding_box(current_poly[current_poly.size() - 1])) final_polys.push_back(final_poly);
         
         }
+        /*for(int i = 0; i < final_polys.size(); i++) for(int j =0; j < final_polys[i].size(); j++){
+            cout << "shape: " << i << ", vertex: " << j << endl;
+            final_polys[i].beziers[j].spew();
+        }*/
         //final_polys = polys;
         return final_polys;
         

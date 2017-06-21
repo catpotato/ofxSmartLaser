@@ -31,10 +31,11 @@ namespace Laser{
     
     void Poly::add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz){
         
+        //cout << "add_vertex_bez called" << endl;
         this->addVertex(pt1);
         
         // make sure no strange values happen
-        if(bz.exists){
+        if(bz.exists && bz.not_setup){
             bz.setup(pt1, pt2);
         }
         

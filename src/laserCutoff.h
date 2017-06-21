@@ -42,7 +42,6 @@ namespace Laser{
         public:
         
             Intersection(Vector_Line l);
-            //Intersection(Bezier b);
         
             ofVec2f point;
             vector <ofVec2f> points;

@@ -98,8 +98,25 @@ namespace Laser{
         // if there are any polygons around, else don't draw them!
         if(sliced_polys.size()){
             
+            // slice off touches with border
+            //vector <Laser::Poly> sliced_polys = slice_off_edges(original_polys);
+            
+            /*for(int i = 0; i < sliced_polys.size(); i++){
+                
+                
+                Laser::Poly current_poly = sliced_polys[i];
+                
+                for(int j = 0; j < current_poly.size(); j++){
+                    cout << "shape: " << i << ", vertex: " << j << endl;
+                
+                    current_poly.beziers[j].spew();
+                
+                }
+            
+            }*/
+            
             // add spaces btwn polys
-            spaced_projection = connect_the_dots(slice_off_edges(original_polys), params);
+            spaced_projection = connect_the_dots(sliced_polys, params);
         
             // update point pool
             point_pool.update(spaced_projection);

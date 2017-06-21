@@ -52,6 +52,9 @@ namespace Laser{
             vector <float> get_ts_from_y(float y);
             bool valid(float t, ofVec2f current_point, ofVec2f current_line);
         
+            bool not_setup;
+            void spew();
+        
         
         
     };

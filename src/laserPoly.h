@@ -29,6 +29,8 @@ namespace Laser{
         
             Poly(ofPolyline p, ofColor c);
             Poly();
+        
+            void reset();
     };
 }
 

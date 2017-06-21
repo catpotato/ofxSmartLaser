@@ -10,8 +10,8 @@
 namespace Laser{
     
 
-    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true){};
-    Bezier::Bezier(bool _exists): exists(_exists){};
+    Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true), not_setup(true){};
+    Bezier::Bezier(bool _exists): exists(_exists), not_setup(true){};
     
     ofVec2f Bezier::get_point(float t, ofPoint _p1, ofPoint _p2){
     
@@ -59,12 +59,16 @@ namespace Laser{
     }
     
     void Bezier::setup(ofVec2f _p1, ofVec2f _p2){
+        
         p1 = _p1;
         p2 = _p2;
+        
         
         // these are here so we can define the point relativley to p1 and p2 and as such are able to move around curves easily
         cp1_diff = cp1 - p1;
         cp2_diff = cp2 - p2;
+        
+        not_setup = false;
         
         
     }
@@ -135,8 +139,8 @@ namespace Laser{
     bool Bezier::valid(float t, ofVec2f current_point, ofVec2f current_line){
     
         // make sure t is btwn 0 and 1;
-        if(t < 0) return false;
-        if(t > 1) return false;
+        if(t <= 0) return false;
+        if(t >= 1) return false;
         
         // get the value of the bez
         /*ofVec2f pt = this->get_point(t, current_point, current_point + current_line);
@@ -174,6 +178,7 @@ namespace Laser{
         
         for(int i = 0; i < intersections.size(); i++) for(int j = 0; j < intersections[i].size(); j++){
             
+            
             if(valid(intersections[i][j], current_point, current_line)){
                 
                 final_intersections.push_back(intersections[i][j]);
@@ -184,6 +189,11 @@ namespace Laser{
         
         return final_intersections;
     
+    }
+    
+    void Bezier::spew(){
+    
+        cout /*<< "p1 : " << p1 << ", cp1_diff + p1 : " << cp1_diff + p1 << ", p2 : " << p2 << ", cp2_diff + p2 : " << cp2_diff + p2*/ << ", start pct: " << start_pct << ", end pct: " << end_pct << endl;
     }
                                 
                             
