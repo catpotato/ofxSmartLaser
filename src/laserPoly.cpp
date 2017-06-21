@@ -47,14 +47,29 @@ namespace Laser{
     
     ofVec2f Poly::get_starting_point(){
         
-        setup_lines();
-    
-        if(beziers[0].exists) return beziers[0].get_point(beziers[0].start_pct, (*this)[0], (*this)[0] + this->lines[0]);
+        //cout << "p1: " << (*this)[0]
+        if(beziers[0].exists) if(start_point_set) return starting_point;
             
         return (*this)[0];
         
+    }
+    ofVec2f Poly::get_final_point(){
+
+        if(beziers[this->size()-2].exists) if(final_point_set) return final_point;
         
+        return (*this)[this->size()-1];
         
+    }
+    void Poly::set_start_point(ofVec2f pt){
+    
+        start_point_set = true;
+        starting_point = pt;
+    }
+    
+    void Poly::set_final_point(ofVec2f pt){
+        
+        final_point_set = true;
+        final_point = pt;
     }
     
     void Poly::add_vertex(ofPoint pt) { add_vertex_bez(pt, pt, Laser::Bezier(false));}

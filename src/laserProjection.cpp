@@ -13,17 +13,35 @@ namespace Laser{
     // called by connect the dots to add a poly to this big poly
     void Projection::add_poly(Laser::Poly poly){
         
-        for(int i = 0; i < (int)poly.size(); i++){
-
+        /*for(int i = 0; i < (int)poly.size(); i++){
             ofColor color;
             
             // if it's the last one of a poly, add in a black point, since there will be a move after it
             if(i == (poly.size() - 1)) color = ofColor::black;
             
             else color = poly.color;
-            
             copy(poly, color, i);
+        }*/
+        
+        /*for first point*/
+        // add first point
+        this->addVertex(poly.get_starting_point());
+        //cout << "starting point: " << poly.get_starting_point() << endl;
+        
+        this->beziers.push_back(poly.beziers[0]);
+        this->colors.push_back(poly.color);
+        // loops through everything except first and last points
+        for(int i = 1; i < poly.size()-1; i++){
+            this->addVertex(poly[i]);
+            this->beziers.push_back(poly.beziers[i]);
+            this->colors.push_back(poly.color);
         }
+        // last point
+        this->addVertex(poly.get_final_point());
+        //cout << "final point" << poly.get_final_point() << endl;
+        this->beziers.push_back(Laser::Bezier(false));
+        this->colors.push_back(ofColor::black);
+        
         
     };
     
@@ -134,8 +152,26 @@ namespace Laser{
     }
     
     void Projection::copy(Laser::Poly poly, ofColor color, int index){
+        // if first point
+        /*if(index == 0){
+            
+            this->addVertex(poly.get_starting_point());
+        
+        }
+        else if(index == poly.size()-1){
+            this->addVertex(poly.get_final_point());
+        }
+        else{
+            
+        }*/
+        poly.setup_lines();
+        poly.beziers[index].p1 = poly[index];
+        poly.beziers[index].p2 = poly[index] + poly.lines[index];
+        poly.beziers[index].update_control_points();
         
         this->addVertex(poly[index]);
+        
+        
         this->beziers.push_back(poly.beziers[index]);
         this->colors.push_back(color);
     }

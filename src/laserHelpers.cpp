@@ -84,7 +84,7 @@ namespace Laser{
                                 
                                 // get point that is pct into the bezier curve and add it to the poly
                                 
-                                resampled_projection.addVertex(bezier.get_point(pct, current_point, next_point));
+                                resampled_projection.addVertex(bezier.get_point(pct));
                                 
                                 resampled_projection.colors.push_back(projection.colors[i]);
                                 
@@ -108,7 +108,7 @@ namespace Laser{
                                     float adjusted_pct = j*step_size + step_size*ease_func(pct);
 
                                     // add a vertex corresponding to the bezier curve, and add the color
-                                    resampled_projection.addVertex(bezier.get_point(adjusted_pct, current_point, next_point));
+                                    resampled_projection.addVertex(bezier.get_point(adjusted_pct));
                                     resampled_projection.colors.push_back(projection.colors[i]);
                                     
                                 }
@@ -188,12 +188,13 @@ namespace Laser{
             nn_polys.erase(nn_polys.begin() + shortest_index);
         }
         
-        
         // add the last one
         spaced_projection.add_poly(current_poly);
         
         //connect to the end
         spaced_projection.finish(params);
+    
+        
         
         
         return spaced_projection;

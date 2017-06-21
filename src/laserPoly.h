@@ -33,6 +33,16 @@ namespace Laser{
             void reset();
         
             ofVec2f get_starting_point();
+            ofVec2f get_final_point();
+            ofVec2f final_point;
+            ofVec2f starting_point;
+        
+            bool start_point_set = false;
+            bool final_point_set = false;
+        
+            void set_final_point(ofVec2f pt);
+            void set_start_point(ofVec2f pt);
+        
     };
 }
 

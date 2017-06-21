@@ -55,6 +55,8 @@ namespace Laser{
             bool not_setup;
             void spew();
         
+        ofVec2f get_point(float t);
+        
         
         
     };

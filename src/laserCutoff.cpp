@@ -69,9 +69,10 @@ namespace Laser {
                         step = 1;
                         //cout << "adding start bez" << endl;
                         final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
+                        //final_poly.starting_point = current_bezier.get_point(0, current_poly[j], current_poly[j]+current_poly.lines[j]);
                     }
                     
-
+                    //cout <<"point no. " << j << ", number of intersections: " << intersections.size() << endl;
                     for(int k = 0; k < intersections.size(); k++){
                         //cout << "point: " << j << endl;
                         //cout << "intersection: " << k << endl;
@@ -84,6 +85,7 @@ namespace Laser {
                             
                             // start new shape
                             final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
+                            final_poly.set_start_point(current_bezier.get_point(intersections[k], current_poly[j], current_poly[j]+current_poly.lines[j]));
                             
                             //cout << " adding a start t" << endl;
                             // add start t
@@ -102,6 +104,7 @@ namespace Laser {
                             
                             // end shape
                             final_poly.add_vertex(current_poly[j]+current_poly.lines[j]);
+                            final_poly.set_final_point(current_bezier.get_point(intersections[k], current_poly[j], current_poly[j]+current_poly.lines[j]));
                             final_polys.push_back(final_poly);
                             Laser::Poly p;
                             final_poly = p;

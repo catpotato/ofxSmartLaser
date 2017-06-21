@@ -30,6 +30,8 @@
 //  [ ] make allocator give different amounts of points to curves
 //
 //  [ ] fix color bleed
+//
+//  [ ] make straight lines just be beziers
 
 
 
@@ -54,7 +56,7 @@ namespace Laser{
         gui_parameters.add(params.points_per_line.set("points per line", 4, 1, 20));
         gui_parameters.add(params.resample_type.set("resampling", 2, 0, 2));
         gui_parameters.add(params.bezier_sample_type.set("bezier resampling", 1, 0, 1));
-        gui_parameters.add(params.midpoints.set("midpoints", 1, 1, 20));
+        gui_parameters.add(params.midpoints.set("midpoints", 0, 0, 20));
         
         ofAddListener(gui_parameters.parameterChangedE(),this,&Dispatch::paramter_changed);
         
@@ -97,37 +99,19 @@ namespace Laser{
         
         // if there are any polygons around, else don't draw them!
         if(sliced_polys.size()){
-            
-            // slice off touches with border
-            //vector <Laser::Poly> sliced_polys = slice_off_edges(original_polys);
-            
-           /*for(int i = 0; i < sliced_polys.size(); i++){
-                
-                
-                Laser::Poly current_poly = sliced_polys[i];
-                
-                for(int j = 0; j < current_poly.size(); j++){
-                    cout << "shape: " << i << ", vertex: " << j << endl;
-                
-                    current_poly.beziers[j].spew();
-                    current_poly.setup_lines();
-                    cout << "next point:" << current_poly.lines[j] + current_poly[j] << endl;
-                
-                }
-            
-            }*/
-            
+            //cout << "a" << endl;
             // add spaces btwn polys
             spaced_projection = connect_the_dots(sliced_polys, params);
-        
+            //cout << "b" << endl;
             // update point pool
             point_pool.update(spaced_projection);
-        
+            //cout << "c" << endl;
             // resample
             resampled_projection = resample(spaced_projection, params, point_pool);
-            
+            //cout << "d" << endl;
             // normalize
             normalized_projection = normalize(resampled_projection, window_dimensions);
+            //cout << "e" << endl;
         }
             
     }
@@ -139,11 +123,10 @@ namespace Laser{
         //spaced_projection.draw();
         if(sliced_polys.size()){
             resampled_projection.draw_to_screen(params);
+            ofSetColor(255, 255, 0);
+            spaced_projection.draw();
             for(int i = 0; i < spaced_projection.size(); i++){
-                spaced_projection.beziers[i].draw();
-                /*ofSetColor(ofColor::yellow);
-                ofDrawCircle(spaced_projection.beziers[i].cp1, 5);
-                ofDrawCircle(spaced_projection.beziers[i].cp2, 5);*/
+                //cout << "point no. " << i << ": "<<  spaced_projection[i] << endl;
             }
         }
     }

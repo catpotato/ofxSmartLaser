@@ -36,6 +36,11 @@ namespace Laser{
         
     }
     
+    ofVec2f Bezier::get_point(float t){
+    
+        return get_point(t, p1, p2);
+    }
+    
     void Bezier::update_control_points(){
         cp1 = p1 + cp1_diff;
         cp2 = p2 + cp2_diff;
@@ -143,12 +148,13 @@ namespace Laser{
         if(t >= 1) return false;
         
         // get the value of the bez
-        /*ofVec2f pt = this->get_point(t, current_point, current_point + current_line);
+        ofVec2f pt = this->get_point(t, current_point, current_point + current_line);
         
-        if(pt.x < 0) return false;
-        if(pt.x > ofGetWidth()) return false;
-        if(pt.y < 0) return false;
-        if(pt.y > ofGetHeight()) return false;*/
+        // FUCKING DODGIEST HACK U EVER SEEN M8, CASTING THE FLOATS TO AN INT TO PREVENT INSTABILITY IN THE VALIDATOR
+        if((int)pt.x < 0) return false;
+        if((int)pt.x > ofGetWidth()) return false;
+        if((int)pt.y < 0) return false;
+        if((int)pt.y > ofGetHeight()) return false;
         
         return true;
         
