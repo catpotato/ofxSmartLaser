@@ -83,19 +83,26 @@ namespace Laser{
         }
     }
     
-    void Projection::draw_to_screen(parameters params){
+    void Projection::add_laser_dot(ofVec2f pt, ofColor color){
         
-        for(int i = 0; i < this->size() - 1; i++){
+        this->addVertex(pt);
+        this->colors.push_back(color);
+    }
+    
+    void Projection::draw_to_screen(parameters params){
+        if(colors.size()){
+            for(int i = 0; i < this->size() - 1; i++){
             
-            ofColor color = this->colors[i];
+                ofColor color = this->colors[i];
             
-            // so that black shows up
-            if(color == ofColor::black) color = ofColor::grey;
-            ofSetColor(color);
+                // so that black shows up
+                if(color == ofColor::black) color = ofColor::grey;
+                ofSetColor(color);
             
-            // draw each point
-            ofDrawCircle((*this)[i], 1.3);
-            // draw each line
+                // draw each point
+                ofDrawCircle((*this)[i], 1.3);
+                // draw each line
+            }
         }
     }
     
@@ -114,5 +121,7 @@ namespace Laser{
         return points;
         
     }
+    
+    
 
 }

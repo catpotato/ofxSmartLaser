@@ -33,6 +33,8 @@ namespace Laser {
             vector <ofxIlda::Point> get_points();
             void draw_to_screen(parameters params);
         
+            void add_laser_dot(ofVec2f pt, ofColor color);
+        
     };
 }
 

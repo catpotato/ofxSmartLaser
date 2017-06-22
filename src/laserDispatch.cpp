@@ -15,23 +15,15 @@
 //
 //  [ ] better color pushback (see laserHelpers)
 //
-//  [ ] make laser not do anything if updating/projectting nothing
-//
-//  [ ] make "add_vertex_bez" better
-//
 //  [ ] improve line setup
 //
 //  [ ] improve parameter handling in laserProjection
-//
-//  [ ] make paths into curves??
 //
 //  [ ] reimplement blank points
 //
 //  [ ] make allocator give different amounts of points to curves
 //
 //  [ ] fix color bleed
-//
-//  [ ] make straight lines just be beziers
 //
 //  [ ] make new kind of class that slicer can use (i.e. NOT Laser::Poly)
 
@@ -89,11 +81,12 @@ namespace Laser{
     
     void Dispatch::update_polys(){
         
+        
+        // slices off the edges of polygons against the bounding box
+        sliced_polys = slice_off_edges(original_polys);
+        
         // if there are any polygons around, else don't draw them!
-        if(original_polys.size()){
-            
-            // slices off the edges of polygons against the bounding box
-            sliced_polys = slice_off_edges(original_polys);
+        if(sliced_polys.size()){
             
             // add spaces btwn polys
             spaced_projection = connect_the_dots(sliced_polys, params);
