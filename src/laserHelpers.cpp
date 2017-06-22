@@ -215,4 +215,17 @@ namespace Laser{
         }
         return projection;
     }
+    
+    
+    vector <Laser::Poly> initialize(vector <Laser::Poly> polys){
+        
+        for(int i = 0; i < polys.size(); i++){
+            
+            polys[i].close_bez();
+            polys[i].setup_lines();
+        
+        }
+        
+        return polys;
+    }
 }

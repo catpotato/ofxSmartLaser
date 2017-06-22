@@ -23,15 +23,15 @@ namespace Laser {
             vector <Laser::Bezier> beziers;
             vector <ofVec2f> lines;
         
-            void setup_lines(parameters params);
+        
             void add_poly(Laser::Poly poly);
+            void connect_to(ofVec2f p2);
+            void add_point(ofVec2f pt, Laser::Poly poly, int index);
             void finish(parameters params);
+            void setup_lines(parameters params);
 
-            void copy(Laser::Poly poly, ofColor color, int index);
-            void connect_the_dots(vector <Laser::Poly> original_polys, parameters params);
             vector <ofxIlda::Point> get_points();
             void draw_to_screen(parameters params);
-        
         
     };
 }

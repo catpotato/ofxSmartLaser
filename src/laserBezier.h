@@ -34,7 +34,7 @@ namespace Laser{
             ofPoint cp1_diff;
             ofPoint cp2_diff;
         
-            bool exists;
+        
             void setup(ofVec2f _p1, ofVec2f _p2);
             vector <ofVec2f> midpoint_starting_points;
         
@@ -50,13 +50,13 @@ namespace Laser{
         
             void draw();
         
-            vector <float> get_valid_intersections(ofVec2f current_point, ofVec2f current_line);
+            vector <float> get_valid_intersections(/*ofVec2f current_point, ofVec2f current_line*/);
             vector <float> get_ts_from_x(float x);
             vector <float> get_ts_from_y(float y);
-            bool valid(float t, ofVec2f current_point, ofVec2f current_line);
+            bool valid(float t);
         
+            bool exists;
             bool not_setup;
-            void spew();
         
         
         

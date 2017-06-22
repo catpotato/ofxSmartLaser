@@ -82,47 +82,27 @@ namespace Laser{
     void Dispatch::set_polys(vector <Laser::Poly> polys){
         
         // points are not cleared here to leave something to give to the projector
-        original_polys = polys;
-        
-        for(int i = 0; i < polys.size(); i++) original_polys[i].close_bez();
+        original_polys = initialize(polys);
         
         update_polys();
     }
     
     void Dispatch::update_polys(){
         
-        
-
-        
-        
         // if there are any polygons around, else don't draw them!
         if(original_polys.size()){
-            cout << original_polys.size() << endl;
-            cout << "a" << endl;
-            
             
             // slices off the edges of polygons against the bounding box
             sliced_polys = slice_off_edges(original_polys);
-            cout << sliced_polys.size() << endl;
             
-            cout << "b" << endl;
-
             // add spaces btwn polys
             spaced_projection = connect_the_dots(sliced_polys, params);
-            cout << spaced_projection.size() << endl;
-            
-            cout << "c" << endl;
 
             // update point pool
             point_pool.update(spaced_projection);
-            
-             cout << "d" << endl;
 
             // resample
             resampled_projection = resample(spaced_projection, params, point_pool);
-            cout << resampled_projection.size() << endl;
-            
-            cout << "e" << endl;
 
             // normalize
             normalized_projection = normalize(resampled_projection, window_dimensions);

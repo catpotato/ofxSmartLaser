@@ -106,12 +106,7 @@ namespace Laser{
     
     ofVec2f Poly::get_last_point(){ return (*this)[this->size()-1];};
     
-    void Poly::add_vertex(ofPoint pt) {
-        //add_vertex_bez(pt, pt, Laser::Bezier(false));
-        add_vert(pt);
-    }
-    
-    void Poly::add_vert(ofVec2f v){
+    void Poly::add_vertex(ofVec2f v){
         
         // temp bezier storage while we get the whole shape, starting point for the other beziers
         if(this->size() == 0){
@@ -133,15 +128,17 @@ namespace Laser{
         }
         
         this->addVertex(v);
-    
+        
     }
-    
+
     
     void Poly::close_bez(){
         //cout << "closing bezier!!" << endl;
         // take last bezier in bezier list, and make it the first one
         for(int i = 0; i < this->size()-1; i++){
             beziers[i] = beziers[i+1];
+            beziers[i].p1 = (*this)[i];
+            beziers[i].p2 = (*this)[i+1];
             
         }
         

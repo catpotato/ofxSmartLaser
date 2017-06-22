@@ -45,16 +45,14 @@ namespace Laser{
         
     }
     
-    ofVec2f Bezier::get_point(float t){
-    
-        return get_point(t, p1, p2);
-    }
+    ofVec2f Bezier::get_point(float t){ return get_point(t, p1, p2); }
     
     void Bezier::update_control_points(){
         cp1 = p1 + cp1_diff;
         cp2 = p2 + cp2_diff;
     
     }
+    
     void Bezier::set_midpoints(parameters params){
         
         // if we are rendering midpoint style (this is here to prevent unesseacry calculations)
@@ -83,8 +81,7 @@ namespace Laser{
         cp2_diff = cp2 - p2;
         
         not_setup = false;
-        
-        
+
     }
     
     void Bezier::draw(){
@@ -150,14 +147,14 @@ namespace Laser{
         
     }
     
-    bool Bezier::valid(float t, ofVec2f current_point, ofVec2f current_line){
+    bool Bezier::valid(float t){
     
         // make sure t is btwn 0 and 1;
         if(t <= 0) return false;
         if(t >= 1) return false;
         
         // get the value of the bez
-        ofVec2f pt = this->get_point(t, current_point, current_point + current_line);
+        ofVec2f pt = this->get_point(t);
         
         // FUCKING DODGIEST HACK U EVER SEEN M8, CASTING THE FLOATS TO AN INT TO PREVENT INSTABILITY IN THE VALIDATOR
         if((int)pt.x < 0) return false;
@@ -169,18 +166,14 @@ namespace Laser{
         
     }
     
-    vector <float> Bezier::get_valid_intersections(ofVec2f current_point, ofVec2f current_line){
+    vector <float> Bezier::get_valid_intersections(){
         
         // go through each case and find the answer
         // x = 0                y = ?
         // x = ofGetWidth()     y = ?
         // x = ?                y = 0
         // x = ?                y = ofGetHeight
-        
-        
-        p1 = current_point;
-        p2 = current_point + current_line;
-        
+
         
         // get t from x
         vector <vector <float>> intersections;
@@ -191,24 +184,11 @@ namespace Laser{
                                 
         vector <float> final_intersections;
         
-        for(int i = 0; i < intersections.size(); i++) for(int j = 0; j < intersections[i].size(); j++){
-            
-            
-            if(valid(intersections[i][j], current_point, current_line)){
-                
-                final_intersections.push_back(intersections[i][j]);
-                
-            }
-            
-        }
+        for(int i = 0; i < intersections.size(); i++) for(int j = 0; j < intersections[i].size(); j++) if(valid(intersections[i][j])) final_intersections.push_back(intersections[i][j]);
+    
         
         return final_intersections;
     
-    }
-    
-    void Bezier::spew(){
-    
-        cout << "p1 : " << p1 /*<< ", cp1_diff + p1 : " << cp1_diff + p1 */<< ", p2 : " << p2 /*<< ", cp2_diff + p2 : " << cp2_diff + p2*/ /*<< ", start pct: " << start_pct << ", end pct: " << end_pct*/ << endl;
     }
                                 
                             

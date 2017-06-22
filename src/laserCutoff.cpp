@@ -11,9 +11,7 @@
 namespace Laser {
     
     vector <Laser::Poly> slice_off_edges(vector <Laser::Poly> polys){
-        
-        for(int i = 0; i < polys.size(); i++) polys[i].setup_lines();
-        
+
         vector <Laser::Poly> final_polys;
         
         // for each poly
@@ -26,10 +24,9 @@ namespace Laser {
             for(int j = 0; j < current_poly.size(); j++){
 
                 Laser::Bezier current_bezier = current_poly.beziers[j];
-                
-                    
+
                 // find intersection between this bezier and the lines
-                vector <float> intersections = current_bezier.get_valid_intersections(current_poly[j], current_poly.lines[j]);
+                vector <float> intersections = current_bezier.get_valid_intersections();
                     
                 // intialize for use in loop
                 int step = 0;

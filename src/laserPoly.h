@@ -24,14 +24,10 @@ namespace Laser{
             void setup_lines();
         
             void add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz);
-            void add_vertex(ofPoint pt);
-            void slice_off_edges();
-            //void translate();
-        
+            void add_vertex(ofVec2f v);
+
             Poly(ofPolyline p, ofColor c);
             Poly();
-        
-            void reset();
         
             ofVec2f get_starting_point();
             ofVec2f get_final_point();
@@ -51,7 +47,6 @@ namespace Laser{
             ofVec2f get_last_point();
         
             void close_bez();
-            void add_vert(ofVec2f v);
         
     };
 }

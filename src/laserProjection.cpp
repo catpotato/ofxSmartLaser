@@ -14,55 +14,57 @@ namespace Laser{
     void Projection::add_poly(Laser::Poly poly){
         
         // deal with previous bezier
-        if(this->size() != 0){
+        if(this->size() != 0) this->connect_to(poly.get_starting_point());
+        
+        // loops through all points
+        for(int i = 0; i < poly.size(); i++){
             
-            ofVec2f p1 = (*this)[this->size()-1];
-            ofVec2f p2 = poly.get_starting_point();
-            ofVec2f diff = p2 -p1;
+            ofVec2f pt = poly[i];
             
-            ofVec2f cp1 = p1 + diff/3;
-            ofVec2f cp2 = p1 + 2*diff/3;
-            this->beziers[beziers.size()-1] = Laser::Bezier(p1,cp1,cp2,p2);
+            // first point
+            if(i == 0) pt = poly.get_starting_point();
+            
+            // last point
+            if(i == poly.size()-1) pt = poly.get_final_point();
+            
+            this->add_point(pt, poly, i);
+        
         }
         
+    }
+    
+    void Projection::connect_to(ofVec2f p2){
         
-        // add first point
-        this->addVertex(poly.get_starting_point());
+        ofVec2f p1 = (*this)[this->size()-1];
+        ofVec2f diff = p2 -p1;
         
-        this->beziers.push_back(poly.beziers[0]);
+        // makes a bezier that is exactly a line
+        ofVec2f cp1 = p1 + diff/3;
+        ofVec2f cp2 = p1 + 2*diff/3;
+        
+        this->beziers[beziers.size()-1] = Laser::Bezier(p1,cp1,cp2,p2);
+        this->colors[colors.size()-1] = ofColor::black;
+        
+    }
+    
+    void Projection::add_point(ofVec2f pt, Laser::Poly poly, int index){
+        
+        this->addVertex(pt);
+        this->beziers.push_back(poly.beziers[index]);
         this->colors.push_back(poly.color);
-        // loops through everything except first and last points
-        for(int i = 1; i < poly.size()-1; i++){
-            this->addVertex(poly[i]);
-            this->beziers.push_back(poly.beziers[i]);
-            this->colors.push_back(poly.color);
-        }
-        // last point
-        this->addVertex(poly.get_final_point());
-        //cout << "final point" << poly.get_final_point() << endl;
-        this->beziers.push_back(Laser::Bezier(false));
-        this->colors.push_back(ofColor::black);
         
-        
-    };
+    }
     
     void Projection::finish(parameters params){
         //close shape
-        ofVec2f p1 = (*this)[this->size()-1];
-        ofVec2f p2 = (*this)[0];
-        ofVec2f diff = p2 -p1;
+        this->connect_to((*this)[0]);
         
-        ofVec2f cp1 = p1 + diff/3;
-        ofVec2f cp2 = p1 + 2*diff/3;
-        this->beziers[this->size()-1] = Laser::Bezier(p1,cp1,cp2,p2);
-        
+        // has to be done
         this->close();
-        cout << (*this)[0] << endl;
-        cout << (*this)[this->size()-1] << endl;
+
         // make lines
         this->setup_lines(params);
         
-        cout << "size: " << this->size() << "bezier size" << this->beziers.size() << endl;
     }
     
     void Projection::setup_lines(parameters params){
@@ -81,73 +83,6 @@ namespace Laser{
         }
     }
     
-    vector <ofxIlda::Point> Projection::get_points(){
-        vector <ofxIlda::Point> points;
-        
-        for(int i = 0; i < this->size(); i++){
-            
-            ofxIlda::Point point;
-            ofVec2f temp =(*this)[i];
-            
-            point.set(temp, this->colors[i]);
-            points.push_back(point);
-        }
-        
-        return points;
-        
-    }
-    
-    void Projection::connect_the_dots(vector <Laser::Poly> original_polys, parameters params){
-        
-        // clear polyline, since there could be guff in there from before
-        this->clear();
-        // same with colors
-        colors.clear();
-        
-        vector <Laser::Poly> nn_polys = original_polys;
-        
-        // start out with the first shape
-        Laser::Poly current_poly = nn_polys[0];
-        
-        // remove first poly form the list so it doesnt decide to connect to itself
-        nn_polys.erase(nn_polys.begin());
-        
-        for(int i = 1; i < original_polys.size(); i++){
-            
-            float shortest_distance = 1000000;
-            int shortest_index;
-            
-            // look at the points remaining and find the closest one
-            for(int j = 0; j < nn_polys.size(); j++){
-                
-                float distance = current_poly[0].squareDistance(nn_polys[j][0]);
-                
-                if(distance < shortest_distance){
-                    
-                    shortest_distance = distance;
-                    shortest_index = j;
-                    
-                }
-            }
-            
-            // add current poly to connected polys
-            this->add_poly(current_poly);
-            
-            // move to the next poly for the next round
-            current_poly = nn_polys[shortest_index];
-            
-            // remove nearest neighbor from the list
-            nn_polys.erase(nn_polys.begin() + shortest_index);
-        }
-        
-        // add the last one
-        this->add_poly(current_poly);
-        
-        //connect to the end
-        this->finish(params);
-        
-    }
-    
     void Projection::draw_to_screen(parameters params){
         
         for(int i = 0; i < this->size() - 1; i++){
@@ -164,30 +99,20 @@ namespace Laser{
         }
     }
     
-    void Projection::copy(Laser::Poly poly, ofColor color, int index){
-        // if first point
-        /*if(index == 0){
+    vector <ofxIlda::Point> Projection::get_points(){
+        vector <ofxIlda::Point> points;
+        
+        for(int i = 0; i < this->size(); i++){
             
-            this->addVertex(poly.get_starting_point());
-        
-        }
-        else if(index == poly.size()-1){
-            this->addVertex(poly.get_final_point());
-        }
-        else{
+            ofxIlda::Point point;
+            ofVec2f temp =(*this)[i];
             
-        }*/
-        poly.setup_lines();
-        poly.beziers[index].p1 = poly[index];
-        poly.beziers[index].p2 = poly[index] + poly.lines[index];
-        poly.beziers[index].update_control_points();
+            point.set(temp, this->colors[i]);
+            points.push_back(point);
+        }
         
-        this->addVertex(poly[index]);
+        return points;
         
-        
-        this->beziers.push_back(poly.beziers[index]);
-        this->colors.push_back(color);
     }
-    
-    
+
 }
