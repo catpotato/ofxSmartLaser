@@ -13,20 +13,9 @@ namespace Laser{
     // called by connect the dots to add a poly to this big poly
     void Projection::add_poly(Laser::Poly poly){
         
-        /*for(int i = 0; i < (int)poly.size(); i++){
-            ofColor color;
-            
-            // if it's the last one of a poly, add in a black point, since there will be a move after it
-            if(i == (poly.size() - 1)) color = ofColor::black;
-            
-            else color = poly.color;
-            copy(poly, color, i);
-        }*/
-        
-        /*for first point*/
+
         // add first point
         this->addVertex(poly.get_starting_point());
-        //cout << "starting point: " << poly.get_starting_point() << endl;
         
         this->beziers.push_back(poly.beziers[0]);
         this->colors.push_back(poly.color);

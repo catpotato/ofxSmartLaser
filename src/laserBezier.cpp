@@ -12,6 +12,15 @@ namespace Laser{
 
     Bezier::Bezier(ofPoint _cp1, ofPoint _cp2): cp1(_cp1), cp2(_cp2), exists(true), not_setup(true){};
     Bezier::Bezier(bool _exists): exists(_exists), not_setup(true){};
+    Bezier::Bezier(ofPoint _p1, ofPoint _cp1, ofPoint _cp2, ofPoint _p2): p1(_p1), cp1(_cp1), cp2(_cp2), p2(_p2), exists(true){
+        
+        // these are here so we can define the point relativley to p1 and p2 and as such are able to move around curves easily
+        cp1_diff = cp1 - p1;
+        cp2_diff = cp2 - p2;
+        
+        not_setup = false;
+    
+    };
     
     ofVec2f Bezier::get_point(float t, ofPoint _p1, ofPoint _p2){
     

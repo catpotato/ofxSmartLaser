@@ -35,26 +35,26 @@ namespace Laser {
     
     vector <Laser::Poly> slice_off_edges(vector <Laser::Poly> polys){
         
+        for(int i = 0; i < polys.size(); i++) polys[i].setup_lines();
+        
         vector <Laser::Poly> final_polys;
         
         // for each poly
         for(int i = 0; i < polys.size(); i++){
             
             Laser::Poly final_poly;
-        
             Laser::Poly current_poly = polys[i];
             
-            // for each point (minus the last one i guess?) look back at this  LOOK BACK AT THIS YOU CHUM!!!!!
+            // for each point
             for(int j = 0; j < current_poly.size(); j++){
 
                 Vector_Line current_line(current_poly[j], current_poly.lines[j]);
+                Laser::Bezier current_bezier = current_poly.beziers[j];
+                
+                //cout << "p1 from current poly: " << current_poly[j] << ", p1 from bezier: " << current_poly[j]+current_bezier.cp1_diff << endl;
             
-                if(current_poly.beziers[j].exists){
-                    
-                    //final_polys = polys;
-                    
-                    // bezier cutoff
-                    Laser::Bezier current_bezier = current_poly.beziers[j];
+                // bezier cutoff
+                if(current_bezier.exists){
                     
                     // find intersection between this bezier and the lines
                     vector <float> intersections = current_bezier.get_valid_intersections(current_poly[j], current_poly.lines[j]);
@@ -62,72 +62,42 @@ namespace Laser {
                     // intialize for use in loop
                     int step = 0;
                     
-                    // if first point for bezier is not in the bounding box
-                    
-                    //cout << "bezier starting point: " << current_poly[j] << endl;
+                    // if first point for bezier is in the bounding box
                     if(in_bounding_box(current_poly[j])){
-                        step = 1;
-                        //cout << "adding start bez" << endl;
-                        final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
-                        //final_poly.starting_point = current_bezier.get_point(0, current_poly[j], current_poly[j]+current_poly.lines[j]);
-                    }
-                    
-                    //cout <<"point no. " << j << ", number of intersections: " << intersections.size() << endl;
-                    for(int k = 0; k < intersections.size(); k++){
-                        //cout << "point: " << j << endl;
-                        //cout << "intersection: " << k << endl;
-                        //cout << "intersections[k]: " << current_bezier.get_point(intersections[k], current_poly[j], current_poly[j]+current_poly.lines[j]) << endl;
                         
-                        step++;
-                        // cout << "step: " << step << endl;
-                        //cout << "shape: " << final_polys.size() << " step: " << step << endl;
-                        if(step % 2 == 1){
-                            
-                            // start new shape
-                            final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
-                            final_poly.set_start_point(current_bezier.get_point(intersections[k], current_poly[j], current_poly[j]+current_poly.lines[j]));
-                            
-                            //cout << " adding a start t" << endl;
-                            // add start t
-                            final_poly.beziers[final_poly.size()-1].start_pct = intersections[k];
-                            //final_poly.beziers[final_poly.size()-1].spew();
-                            
-                        }
+                        // such that step will be odd when it enters the loop
+                        step = 1;
+                        
+                        // add a bezier; this also is to ensure that normal beziers still pass
+                        final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
+                    }
+
+                    for(int k = 0; k < intersections.size(); k++, step++){
+
+                        // if odd, or if first point is out of bounds
+                        if(step % 2 == 0) final_poly.start_cut_bez(intersections[k], current_bezier);
                         
                         // step is even, first point is in bounds
-                        if(step % 2 == 0){
+                        if(step % 2 == 1){
                             
-                            //cout << " adding an end t" << endl;
-                            // add end t
-                            final_poly.beziers[final_poly.size()-1].end_pct = intersections[k];
-                            //final_poly.beziers[final_poly.size()-1].spew();
+                            final_poly.end_cut_bez(intersections[k], current_bezier);
                             
-                            // end shape
-                            final_poly.add_vertex(current_poly[j]+current_poly.lines[j]);
-                            final_poly.set_final_point(current_bezier.get_point(intersections[k], current_poly[j], current_poly[j]+current_poly.lines[j]));
+                            // send final shape
                             final_polys.push_back(final_poly);
-                            Laser::Poly p;
-                            final_poly = p;
-                            //cout << final_poly.size() << endl;
+                            final_poly = Laser::Poly();
                             
                         }
                         
                     }
-                 
-                    
-                    // if you are the last bezier, add the last point on
-                
-                    
                     
                 }
                 
                 // not a bezier
                 else{
-                
+                    cout << "HI, I ACTIVATED THE ELSE LOOP!!!" << endl;
                     // nothing to do
                     if(current_line.completely_inside()) final_poly.add_vertex(current_poly[j]);
 
-                    
                     // figure out if there are one or two points of intersection
                     else{
                         
@@ -146,9 +116,7 @@ namespace Laser {
                                 final_polys.push_back(final_poly);
                                 
                                 // clears poly for next person to use
-                                // TODO cout << HI THIS IS GOING TO BE A PROBLEM!!!!!!
-                                Laser::Poly p;
-                                final_poly = p;
+                                final_poly = Laser::Poly();
                                 
                             }
                             // if current point is outside, means we need to start a new shape with intersection as first point
@@ -165,8 +133,7 @@ namespace Laser {
                             final_poly.add_vertex(ordered_points[1]);
 
                             final_polys.push_back(final_poly);
-                            Laser::Poly p;
-                            final_poly = p;
+                            final_poly = Laser::Poly();
             
                         }
                     }
@@ -176,14 +143,7 @@ namespace Laser {
             if(in_bounding_box(current_poly[current_poly.size() - 1])) final_polys.push_back(final_poly);
         
         }
-        /*for(int i = 0; i < final_polys.size(); i++) for(int j =0; j < final_polys[i].size(); j++){
-            cout << "shape: " << i << ", vertex: " << j << endl;
-            final_polys[i].beziers[j].spew();
-        }*/
-        //final_polys = polys;
         return final_polys;
-        
-    
     
     }
     

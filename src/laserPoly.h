@@ -20,6 +20,7 @@ namespace Laser{
             // this is a clever vector of vectors which just has the direction that the line goes at the given index with starting point at that index in the polygon
             vector <ofVec2f> lines;
             vector <Laser::Bezier> beziers;
+            vector <Laser::Bezier> new_beziers;
             void setup_lines();
         
             void add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz);
@@ -42,6 +43,15 @@ namespace Laser{
         
             void set_final_point(ofVec2f pt);
             void set_start_point(ofVec2f pt);
+        
+            void start_cut_bez(float t, Laser::Bezier bez);
+            void end_cut_bez(float t, Laser::Bezier bez);
+        
+            void bez_to(ofVec2f cp1, ofVec2f cp2, ofVec2f p2);
+            ofVec2f get_last_point();
+        
+            void close_bez();
+            void add_vert(ofVec2f v);
         
     };
 }

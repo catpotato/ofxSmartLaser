@@ -54,94 +54,90 @@ namespace Laser{
         Laser::Projection resampled_projection;
         
         // for each vertex
-        if(params.resample_type != curves){
+        for(int i = 0; i < projection.size(); i++){
+                
+            int allowed_points = point_pool.get_allowed_points(i);
             
-            for(int i = 0; i < projection.size(); i++){
+            // make a vector valued function
+            ofVec2f direction = projection.lines[i];
+            ofVec2f starting_point = projection[i];
                 
-                int allowed_points = point_pool.get_allowed_points(i);
-            
-                // make a vector valued function
-                ofVec2f direction = projection.lines[i];
-                ofVec2f starting_point = projection[i];
+            // get bezier poly
+            Laser::Bezier bezier = projection.beziers[i];
                 
-                // get bezier poly
-                Laser::Bezier bezier = projection.beziers[i];
-                
-                // find percentage area that each segment gets
-                if(bezier.exists){
+            // find percentage area that each segment gets
+            if(bezier.exists){
                     
-                    // saves on calculation
-                    ofVec2f current_point = starting_point;
-                    ofVec2f next_point = starting_point+direction;
+                // saves on calculation
+                ofVec2f current_point = starting_point;
+                ofVec2f next_point = starting_point+direction;
                     
-                    switch (params.bezier_sample_type) {
-                            
-                        case exact:
-                            // for each point
-                            for(int j = 0; j < allowed_points; j++){
-                                
-                                float pct = ((float)j)/((float)(allowed_points));
-                                
-                                // get point that is pct into the bezier curve and add it to the poly
-                                
-                                resampled_projection.addVertex(bezier.get_point(pct));
-                                
-                                resampled_projection.colors.push_back(projection.colors[i]);
-                                
-                            }
-                            break;
-                            
-                        case midpoint:
-
-                            // for each section created by a midpoint
-                            for(int j = 0; j <= params.midpoints; j++){
-                                
-                                int allowed_points_per_bez_sec = allowed_points/(params.midpoints+1);
-
-                                // for the allowed points
-                                for(int k = 0; k < allowed_points_per_bez_sec; k++){
-                                    
-                                    float pct =  ((float)k)/((float)allowed_points_per_bez_sec);
-                                    float step_size = 1/((float)params.midpoints+1);
-                                    
-                                    // move through based on easing function
-                                    float adjusted_pct = j*step_size + step_size*ease_func(pct);
-
-                                    // add a vertex corresponding to the bezier curve, and add the color
-                                    resampled_projection.addVertex(bezier.get_point(adjusted_pct));
-                                    resampled_projection.colors.push_back(projection.colors[i]);
-                                    
-                                }
-                                
-                            }
-                            break;
-                    }
-
-                
-                }
-                else{
-                    // for each allowed point
-                    for(int j = 0; j < allowed_points; j++){
+                switch (params.bezier_sample_type) {
                         
-                        float pct = ((float)j)/((float)(allowed_points));
-                        
-                        // swap colors over, could use a lot of work
-                        resampled_projection.colors.push_back(projection.colors[i]);
-                        switch (params.resample_type) {
+                    case exact:
+                        // for each point
+                        for(int j = 0; j < allowed_points; j++){
                                 
-                            case vertex: resampled_projection.addVertex(projection[i]); break;
+                            float pct = ((float)j)/((float)(allowed_points));
                                 
-                            case uniform: resampled_projection.addVertex(starting_point + pct*direction); break;
+                            // get point that is pct into the bezier curve and add it to the poly
                                 
-                            case adjusted: resampled_projection.addVertex(starting_point + ease_func(pct)*direction); break;
+                            resampled_projection.addVertex(bezier.get_point(pct));
+   
+                            resampled_projection.colors.push_back(projection.colors[i]);
                                 
                         }
-                        
-                    }
-                
+                        break;
+                            
+                    case midpoint:
+
+                        // for each section created by a midpoint
+                        for(int j = 0; j <= params.midpoints; j++){
+                                
+                            int allowed_points_per_bez_sec = allowed_points/(params.midpoints+1);
+
+                            // for the allowed points
+                            for(int k = 0; k < allowed_points_per_bez_sec; k++){
+                                    
+                                float pct =  ((float)k)/((float)allowed_points_per_bez_sec);
+                                float step_size = 1/((float)params.midpoints+1);
+                                    
+                                // move through based on easing function
+                                float adjusted_pct = j*step_size + step_size*ease_func(pct);
+
+                                // add a vertex corresponding to the bezier curve, and add the color
+                                resampled_projection.addVertex(bezier.get_point(adjusted_pct));
+                                resampled_projection.colors.push_back(projection.colors[i]);
+                                    
+                            }
+                                
+                        }
+                        break;
                 }
-            
+
             }
+            else{
+                // for each allowed point
+                for(int j = 0; j < allowed_points; j++){
+                        
+                    float pct = ((float)j)/((float)(allowed_points));
+                        
+                    // swap colors over, could use a lot of work
+                    resampled_projection.colors.push_back(projection.colors[i]);
+                    switch (params.resample_type) {
+                                
+                        case vertex: resampled_projection.addVertex(projection[i]); break;
+                                
+                        case uniform: resampled_projection.addVertex(starting_point + pct*direction); break;
+                                
+                        case adjusted: resampled_projection.addVertex(starting_point + ease_func(pct)*direction); break;
+                                
+                    }
+                        
+                }
+                
+            }
+            
         }
         
         

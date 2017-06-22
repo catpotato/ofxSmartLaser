@@ -39,10 +39,13 @@ namespace Laser{
             vector <ofVec2f> midpoint_starting_points;
         
             Bezier(ofPoint _cp1, ofPoint _cp2);
+            Bezier(ofPoint _p1, ofPoint _cp1, ofPoint _cp2, ofPoint _p2);
             Bezier(bool _exists);
+        
         
             void set_midpoints(parameters params);
             ofVec2f get_point(float t, ofPoint p1, ofPoint p2);
+            ofVec2f get_point(float t);
             void update_control_points();
         
             void draw();
@@ -55,7 +58,7 @@ namespace Laser{
             bool not_setup;
             void spew();
         
-        ofVec2f get_point(float t);
+        
         
         
         

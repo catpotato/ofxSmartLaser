@@ -29,6 +29,7 @@ namespace Laser {
             ofParameter <int> spacing_points = 0;
             ofParameter <bool> constant_point_per_line = false;
             ofParameter <int> points_per_line = 5;
+            ofParameter <int> color_offset = 5;
             ofParameter <bool> show_move = false;
             bool show_params = true;
         
