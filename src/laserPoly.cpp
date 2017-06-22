@@ -140,7 +140,7 @@ namespace Laser{
     void Poly::close_bez(){
         //cout << "closing bezier!!" << endl;
         // take last bezier in bezier list, and make it the first one
-        for(int i = 0; i < this->size(); i++){
+        for(int i = 0; i < this->size()-1; i++){
             beziers[i] = beziers[i+1];
             
         }

@@ -54,6 +54,7 @@ namespace Laser {
                 //cout << "p1 from current poly: " << current_poly[j] << ", p1 from bezier: " << current_poly[j]+current_bezier.cp1_diff << endl;
             
                 // bezier cutoff
+                
                 if(current_bezier.exists){
                     
                     // find intersection between this bezier and the lines
@@ -71,7 +72,7 @@ namespace Laser {
                         // add a bezier; this also is to ensure that normal beziers still pass
                         final_poly.add_vertex_bez(current_poly[j], current_poly[j]+current_poly.lines[j], current_bezier);
                     }
-
+                    //cout << intersections.size() << endl;
                     for(int k = 0; k < intersections.size(); k++, step++){
 
                         // if odd, or if first point is out of bounds
@@ -92,55 +93,8 @@ namespace Laser {
                     
                 }
                 
-                // not a bezier
-                else{
-                    cout << "HI, I ACTIVATED THE ELSE LOOP!!!" << endl;
-                    // nothing to do
-                    if(current_line.completely_inside()) final_poly.add_vertex(current_poly[j]);
-
-                    // figure out if there are one or two points of intersection
-                    else{
-                        
-                        vector <ofVec2f> intersections = current_line.get_valid_intersections();
-                        
-                        // a single intersection
-                        if(intersections.size() == 1){
-                            
-                            // if current point is inside, means that intersection is next point, need to end a poly
-                            if(in_bounding_box(current_poly[j])){
-                                //cout << "hey, make the lines send empty beziers why don't cha" << enl
-                                final_poly.add_vertex(current_poly[j]);
-                                final_poly.add_vertex(intersections[0]);
-                                
-                                // ends the poly
-                                final_polys.push_back(final_poly);
-                                
-                                // clears poly for next person to use
-                                final_poly = Laser::Poly();
-                                
-                            }
-                            // if current point is outside, means we need to start a new shape with intersection as first point
-                            else final_poly.add_vertex(intersections[0]);
-                        
-                        }
-                        
-                        // two intersections, only one possibly scenario, so need to start a new shape, add closer point, then add other point, then close shape
-                        if(intersections.size() == 2){
-                        
-                            vector <ofVec2f> ordered_points = order_points(intersections, current_poly[j]);
-            
-                            final_poly.add_vertex(ordered_points[0]);
-                            final_poly.add_vertex(ordered_points[1]);
-
-                            final_polys.push_back(final_poly);
-                            final_poly = Laser::Poly();
-            
-                        }
-                    }
-                }
             }
-            
-            if(in_bounding_box(current_poly[current_poly.size() - 1])) final_polys.push_back(final_poly);
+            if(final_poly.size()) final_polys.push_back(final_poly);
         
         }
         return final_polys;

@@ -84,14 +84,7 @@ namespace Laser{
         // points are not cleared here to leave something to give to the projector
         original_polys = polys;
         
-        for(int i = 0; i < polys.size(); i++){
-        
-            original_polys[i].close_bez();
-        
-        }
-        
-        
-        //TODO check if polys are the same??
+        for(int i = 0; i < polys.size(); i++) original_polys[i].close_bez();
         
         update_polys();
     }
@@ -100,24 +93,40 @@ namespace Laser{
         
         
 
-        // slices off the edges of polygons against the bounding box
-        sliced_polys = slice_off_edges(original_polys);
+        
         
         // if there are any polygons around, else don't draw them!
-        if(sliced_polys.size()){
+        if(original_polys.size()){
+            cout << original_polys.size() << endl;
+            cout << "a" << endl;
+            
+            
+            // slices off the edges of polygons against the bounding box
+            sliced_polys = slice_off_edges(original_polys);
+            cout << sliced_polys.size() << endl;
+            
+            cout << "b" << endl;
 
             // add spaces btwn polys
             spaced_projection = connect_the_dots(sliced_polys, params);
+            cout << spaced_projection.size() << endl;
+            
+            cout << "c" << endl;
 
             // update point pool
             point_pool.update(spaced_projection);
-            //cout << "c" << endl;
+            
+             cout << "d" << endl;
+
             // resample
             resampled_projection = resample(spaced_projection, params, point_pool);
-            //cout << "d" << endl;
+            cout << resampled_projection.size() << endl;
+            
+            cout << "e" << endl;
+
             // normalize
             normalized_projection = normalize(resampled_projection, window_dimensions);
-            //cout << "e" << endl;
+
         }
             
     }
@@ -126,14 +135,9 @@ namespace Laser{
     void Dispatch::draw(){
         // draw gui
         gui.draw();
-        //spaced_projection.draw();
-        if(sliced_polys.size()){
+        
+        if(original_polys.size()){
             resampled_projection.draw_to_screen(params);
-            //ofSetColor(255, 255, 0);
-            //spaced_projection.draw();
-            for(int i = 0; i < spaced_projection.size(); i++){
-                //cout << "point no. " << i << ": "<<  spaced_projection[i] << endl;
-            }
         }
     }
     

@@ -13,7 +13,19 @@ namespace Laser{
     // called by connect the dots to add a poly to this big poly
     void Projection::add_poly(Laser::Poly poly){
         
-
+        // deal with previous bezier
+        if(this->size() != 0){
+            
+            ofVec2f p1 = (*this)[this->size()-1];
+            ofVec2f p2 = poly.get_starting_point();
+            ofVec2f diff = p2 -p1;
+            
+            ofVec2f cp1 = p1 + diff/3;
+            ofVec2f cp2 = p1 + 2*diff/3;
+            this->beziers[beziers.size()-1] = Laser::Bezier(p1,cp1,cp2,p2);
+        }
+        
+        
         // add first point
         this->addVertex(poly.get_starting_point());
         
@@ -36,9 +48,21 @@ namespace Laser{
     
     void Projection::finish(parameters params){
         //close shape
+        ofVec2f p1 = (*this)[this->size()-1];
+        ofVec2f p2 = (*this)[0];
+        ofVec2f diff = p2 -p1;
+        
+        ofVec2f cp1 = p1 + diff/3;
+        ofVec2f cp2 = p1 + 2*diff/3;
+        this->beziers[this->size()-1] = Laser::Bezier(p1,cp1,cp2,p2);
+        
         this->close();
+        cout << (*this)[0] << endl;
+        cout << (*this)[this->size()-1] << endl;
         // make lines
         this->setup_lines(params);
+        
+        cout << "size: " << this->size() << "bezier size" << this->beziers.size() << endl;
     }
     
     void Projection::setup_lines(parameters params){
