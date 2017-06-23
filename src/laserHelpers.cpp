@@ -71,48 +71,13 @@ namespace Laser{
                         float pct = ((float)j)/((float)(allowed_points));
 
                         // get point that is pct into the bezier curve and add it to the poly
-                        //resampled_projection.add_laser_dot(bezier.get_point(pct), projection.colors[i]);
-                        if(params.color_offset > 0){
-                            
-                            // send more color from previous section at the begining of the current line
-                            ofColor previous_color;
-                            
-                            if(i == 0){
-                                previous_color = projection.colors[projection.colors.size()-1];
-                            }
-                            else{
-                                previous_color = projection.colors[i-1];
-                            }
-                            
-                            if(j < params.color_offset){
-                                resampled_projection.add_laser_dot(bezier.get_point(pct), previous_color);
-                            }
-                            else{
-                                resampled_projection.add_laser_dot(bezier.get_point(pct), projection.colors[i]);
-                            }
-                            
-                            
-                        
-                        }
-                        else{
-                            // send more color from the next section at the end of the current line
-                            ofColor next_color = projection.colors[(i+1)%(projection.colors.size()-1)];
-                            
-                            if(j > allowed_points+params.color_offset){
-                            
-                                resampled_projection.add_laser_dot(bezier.get_point(pct), next_color);
-                            }
-                            else{
-                                resampled_projection.add_laser_dot(bezier.get_point(pct), projection.colors[i]);
-                            
-                            }
-                        }
-                                
+                        resampled_projection.add_laser_dot(bezier.get_point(pct), projection.get_color(params.color_offset, i, j, allowed_points));
+                    
                     }
                     break;
                             
                 case midpoint:
-
+                    int points_in = 0;
                     // for each section created by a midpoint
                     for(int j = 0; j <= params.midpoints; j++){
                                 
@@ -128,7 +93,9 @@ namespace Laser{
                             float adjusted_pct = j*step_size + step_size*ease_func(pct);
 
                             // add a vertex corresponding to the bezier curve, and add the color
-                            resampled_projection.add_laser_dot(bezier.get_point(adjusted_pct), projection.colors[i]);
+                            resampled_projection.add_laser_dot(bezier.get_point(adjusted_pct), projection.get_color(params.color_offset, i, points_in, allowed_points));
+                            
+                            points_in++;
                                     
                         }
                                 
@@ -187,10 +154,7 @@ namespace Laser{
         
         //connect to the end
         spaced_projection.finish(params);
-    
-        
-        
-        
+
         return spaced_projection;
         
     }

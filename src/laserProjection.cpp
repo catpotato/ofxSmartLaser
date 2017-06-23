@@ -89,6 +89,26 @@ namespace Laser{
         this->colors.push_back(color);
     }
     
+    ofColor Projection::get_color(int color_offset, int point, int points_in, int points_allowed){
+        ofColor current_color = colors[point];
+        
+        if(color_offset > 0){
+            ofColor prev_color = colors[(point+colors.size()-1)%colors.size()];
+            
+            if(points_in < color_offset) return prev_color;
+        
+        }
+        else{
+            ofColor next_color = colors[point%(colors.size()-1)];
+            
+            if(points_in > points_allowed+color_offset) return next_color;
+        
+        }
+        
+        return current_color;
+        
+    }
+    
     void Projection::draw_to_screen(parameters params){
         if(colors.size()){
             for(int i = 0; i < this->size() - 1; i++){

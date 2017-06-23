@@ -35,6 +35,8 @@ namespace Laser {
         
             void add_laser_dot(ofVec2f pt, ofColor color);
         
+            ofColor get_color(int color_offset, int point, int points_in, int points_allowed);
+        
     };
 }
 
