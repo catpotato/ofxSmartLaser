@@ -1,9 +1,3 @@
-# ofxSmartLaser
-
-## Intro
-
-
-
 ofxSmartLaser 
 =====================================
 
