@@ -21,14 +21,12 @@ namespace Laser {
         public:
             vector <ofColor> colors;
             vector <Laser::Bezier> beziers;
-            vector <ofVec2f> lines;
         
         
             void add_poly(Laser::Poly poly);
             void connect_to(ofVec2f p2);
             void add_point(ofVec2f pt, Laser::Poly poly, int index);
             void finish(parameters params);
-            void setup_lines(parameters params);
 
             vector <ofxIlda::Point> get_points();
             void draw_to_screen(parameters params);
@@ -36,6 +34,7 @@ namespace Laser {
             void add_laser_dot(ofVec2f pt, ofColor color);
         
             ofColor get_color(int color_offset, int point, int points_in, int points_allowed);
+            float get_perimeter();
         
     };
 }

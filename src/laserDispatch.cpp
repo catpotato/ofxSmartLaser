@@ -26,6 +26,8 @@
 //  [ ] fix color bleed
 //
 //  [ ] make new kind of class that slicer can use (i.e. NOT Laser::Poly)
+//
+//  [ ] if it's one shape, try to keep it that way
 
 
 
@@ -40,7 +42,7 @@ namespace Laser{
         window_dimensions.x = ofGetWidth();
         window_dimensions.y = ofGetHeight();
         
-        //etherdream.setup();
+        etherdream.setup();
         
         // a bunch of gui stuff you have to set up
         gui_parameters.add(params.pps.set("PPS", 25000, 500, 40000));
@@ -57,10 +59,9 @@ namespace Laser{
         
         gui.setup(gui_parameters);
         
-        ofBackground(0);
-        
         etherdream.setPPS(params.pps);
         point_pool.update_params(params);
+        
     }
     
     void Dispatch::paramter_changed(ofAbstractParameter &e){
@@ -81,19 +82,23 @@ namespace Laser{
     
     void Dispatch::update_polys(){
         
-        
         // slices off the edges of polygons against the bounding box
         sliced_polys = slice_off_edges(original_polys);
         
         // if there are any polygons around, else don't draw them!
         if(sliced_polys.size()){
             
+            cout << "updating polys" << endl;
+            for(int i = 0; i < sliced_polys.size(); i++) cout << sliced_polys[i].color << endl;
+            
             // add spaces btwn polys
             spaced_projection = connect_the_dots(sliced_polys, params);
+            
+            for (int i = 0; i < spaced_projection.colors.size(); i++) cout << spaced_projection.colors[i] << endl;
 
             // update point pool
             point_pool.update(spaced_projection);
-
+            
             // resample
             resampled_projection = resample(spaced_projection, params, point_pool);
 
@@ -106,10 +111,12 @@ namespace Laser{
     
     
     void Dispatch::draw(){
+        ofBackground(0);
         // draw gui
         gui.draw();
         
         if(original_polys.size()){
+            //spaced_projection.draw();
             resampled_projection.draw_to_screen(params);
         }
     }
@@ -120,9 +127,9 @@ namespace Laser{
     }
     
     void Dispatch::project(){
-        //etherdream.setPPS(params.pps);
+        etherdream.setPPS(params.pps);
         points = normalized_projection.get_points();
-        //etherdream.setPoints(points);
+        etherdream.setPoints(points);
     }
     
 }

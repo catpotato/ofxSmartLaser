@@ -21,7 +21,7 @@ namespace Laser{
             }
         }*/
         
-        total_perimeter = projection.getPerimeter();
+        total_perimeter = projection.get_perimeter();
         
         //float bezier_pct;
         
@@ -29,14 +29,14 @@ namespace Laser{
         
         // do a lazy first passthrough of all points
         
-        number_of_verticies = projection.size();
+       // number_of_verticies = projection.size();
         
         int used_points = 0;
         allowed_points.clear();
         
             
-        for(int i = 0; i < projection.size(); i++){
-            ofVec2f direction = projection.lines[i];
+        for(int i = 0; i < projection.beziers.size(); i++){
+            ofVec2f direction = projection.beziers[i].p1 - projection.beziers[i].p2;
             float length = direction.distance(direction.zero());
             
             float pct = length/total_perimeter;

@@ -14,6 +14,7 @@
 #include "ofMain.h"
 #include "laserStructs.h"
 #include "poly34.h"
+#include <iostream>  
 
 namespace Laser{
     
@@ -23,10 +24,10 @@ namespace Laser{
         
         public:
         
-            ofPoint cp1;
-            ofPoint cp2;
-            ofPoint p1;
-            ofPoint p2;
+            ofVec2f cp1;
+            ofVec2f cp2;
+            ofVec2f p1;
+            ofVec2f p2;
 
             float start_pct = 0;
             float end_pct = 1;
@@ -58,9 +59,12 @@ namespace Laser{
             bool exists;
             bool not_setup;
         
+            void spew();
         
+            ofVec2f get_starting_point();
+            ofVec2f get_final_point();
         
-        
+            void translate(ofVec2f v);
         
     };
 }

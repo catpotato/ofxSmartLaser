@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include "ofMain.h"
 #include "laserProjection.h"
-#include "laserCrawler.h"
 #include "laserBezier.h"
 
 namespace Laser{

@@ -56,7 +56,7 @@ namespace Laser {
         
         // must be called at begining, helps the etherdream setup and puts default parameters for gui in
         void setup();
-        // update is really only called to update parameters. If you are not planning to update the parameters durring runtime, you do not have to use this
+        // update is really only called to update parameters. If you are not plannin sg to update the parameters durring runtime, you do not have to use this
         void update();
         // draws to screen
         void draw();
@@ -64,9 +64,6 @@ namespace Laser {
         void project();
         void update_polys();
         void paramter_changed(ofAbstractParameter &e);
-        
-    
-        
     
     };
 }

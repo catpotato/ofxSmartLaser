@@ -17,18 +17,10 @@ namespace Laser{
     class Poly : public ofPolyline{
         public:
             ofColor color;
-            // this is a clever vector of vectors which just has the direction that the line goes at the given index with starting point at that index in the polygon
-            vector <ofVec2f> lines;
-            vector <Laser::Bezier> beziers;
-            vector <Laser::Bezier> new_beziers;
-            void setup_lines();
         
             void add_vertex_bez(ofPoint pt1, ofPoint pt2, Laser::Bezier bz);
             void add_vertex(ofVec2f v);
 
-            Poly(ofPolyline p, ofColor c);
-            Poly();
-        
             ofVec2f get_starting_point();
             ofVec2f get_final_point();
             ofVec2f final_point;
@@ -48,6 +40,17 @@ namespace Laser{
         
             void close_bez();
         
+            void translate(ofVec2f v);
+            void scale(float scalar);
+        
+        
+            vector <Laser::Bezier> beziers;
+            int size();
+        
+            ofVec2f & operator[](const int & i);
+        
+    private:
+        //vector <Laser::Point> points;
     };
 }
 

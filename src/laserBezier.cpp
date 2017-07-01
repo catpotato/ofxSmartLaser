@@ -190,6 +190,21 @@ namespace Laser{
         return final_intersections;
     
     }
+    
+    ofVec2f Bezier::get_starting_point(){ return get_point(0);}
+    
+    ofVec2f Bezier::get_final_point(){ return get_point(1);}
+    
+    void Bezier::spew() { cout << "p1: " << p1 << "; start: " << get_starting_point() << "; p2: " << p2 << "; final: " << get_final_point() << endl;}
+    
+    
+    void Bezier::translate(ofVec2f v){
+        p1 += v;
+        p2 += v;
+        cp1+= v;
+        cp2+= v;
+    
+    }
                                 
                             
     
