@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "ofMain.h"
+#include "ofMain.h"
 #include "svgtiny.h"
 #include "ofPath.h"
 #include "ofTypes.h"
@@ -28,7 +28,7 @@ class ofxSVG {
 
 		const vector <ofPath> & getPaths() const;
         Laser::Poly laser_poly;
-        vector <Laser::Poly> 
+        vector <Laser::Poly> polys;
 
 	private:
 

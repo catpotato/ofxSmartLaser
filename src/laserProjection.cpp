@@ -18,7 +18,6 @@ namespace Laser{
         for(int i = 0; i < poly.size(); i++){
             
             beziers.push_back(poly.beziers[i]);
-            cout << "pushing back " << poly.color << endl;
             colors.push_back(poly.color);
         
         }

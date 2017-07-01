@@ -62,7 +62,7 @@ namespace Laser{
             Laser::Bezier bezier = projection.beziers[i];
             
             // if this color or the next color are black
-            if(projection.colors[i] == ofColor::black || projection.colors[(i+1)%(projection.colors.size()-1)] == ofColor::black){
+            if(projection.colors[i] == ofColor::black /*|| projection.colors[(i+1)%(projection.colors.size()-1)] == ofColor::black*/){
                 
                 int points_in = 0;
                 // for each section created by a midpoint
@@ -152,9 +152,6 @@ namespace Laser{
     }
     
     Laser::Projection connect_the_dots(vector <Laser::Poly> original_polys, parameters params){
-        
-        cout << "starting dots" << endl;
-        for(int i = 0; i < original_polys.size(); i++) cout << original_polys[i].color << endl;
 
         Laser::Projection spaced_projection;
         
@@ -202,6 +199,15 @@ namespace Laser{
 
         return spaced_projection;
         
+    }
+    
+    vector <Laser::Poly> get_polys_from_svg(string path){
+        
+        ofxSVG svg;
+        svg.load(path);
+        
+        return svg.polys;
+
     }
     
     

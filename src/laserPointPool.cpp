@@ -56,15 +56,8 @@ namespace Laser{
     }
     
     int PointPool::get_allowed_points(int index){
-    
         
-        if(params.constant_point_per_line){
-            return params.points_per_line;
-        }
-        else{
-            
-            return allowed_points[index];
-        }
+        return allowed_points[index];
         
         
         

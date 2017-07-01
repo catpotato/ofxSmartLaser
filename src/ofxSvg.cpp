@@ -88,12 +88,11 @@ void ofxSVG::setupShape(struct svgtiny_shape * shape, ofPath & path){
 	if(shape->stroke != svgtiny_TRANSPARENT){
 		path.setStrokeWidth(shape->stroke_width);
 		path.setStrokeHexColor(shape->stroke);
+
+        laser_poly.color = ofColor::fromHex(shape->stroke);
 	}
     
-    /*for(int i = 0; i < (int)shape->path_length; i++){
-    
-        cout << p[i] << endl;
-    }*/
+    cout << shape->stroke << endl;
 
 	for(int i = 0; i < (int)shape->path_length;){
 		if(p[i] == svgtiny_PATH_MOVE){
@@ -105,6 +104,8 @@ void ofxSVG::setupShape(struct svgtiny_shape * shape, ofPath & path){
 		else if(p[i] == svgtiny_PATH_CLOSE){
             cout << "close" << endl;
 			path.close();
+            polys.push_back(laser_poly);
+            laser_poly = Laser::Poly();
 
 			i += 1;
 		}

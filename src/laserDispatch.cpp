@@ -48,8 +48,6 @@ namespace Laser{
         gui_parameters.add(params.pps.set("PPS", 25000, 500, 40000));
         gui_parameters.add(params.max_points.set("max points", 500, 5, 1000));
         gui_parameters.add(params.blank_points.set("blank points", 0, 0, 500));
-        gui_parameters.add(params.constant_point_per_line.set("constant point per line", false));
-        gui_parameters.add(params.points_per_line.set("points per line", 4, 1, 20));
         gui_parameters.add(params.resample_type.set("resampling", 2, 0, 2));
         gui_parameters.add(params.bezier_sample_type.set("bezier resampling", 1, 0, 1));
         gui_parameters.add(params.midpoints.set("midpoints", 0, 0, 20));
@@ -88,13 +86,8 @@ namespace Laser{
         // if there are any polygons around, else don't draw them!
         if(sliced_polys.size()){
             
-            cout << "updating polys" << endl;
-            for(int i = 0; i < sliced_polys.size(); i++) cout << sliced_polys[i].color << endl;
-            
             // add spaces btwn polys
             spaced_projection = connect_the_dots(sliced_polys, params);
-            
-            for (int i = 0; i < spaced_projection.colors.size(); i++) cout << spaced_projection.colors[i] << endl;
 
             // update point pool
             point_pool.update(spaced_projection);
