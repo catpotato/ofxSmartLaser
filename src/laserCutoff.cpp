@@ -42,7 +42,7 @@ namespace Laser {
                 }
 
                 for(int k = 0; k < intersections.size(); k++, step++){
-
+ 
                     // if odd, or if first point is out of bounds
                     if(step % 2 == 0) final_poly.start_cut_bez(intersections[k], current_bezier);
                         
@@ -64,15 +64,16 @@ namespace Laser {
             if(final_poly.size()) final_poly.color = current_poly.color; final_polys.push_back(final_poly);
         
         }
+    
         return final_polys;
     
     }
 
     bool in_bounding_box(ofVec2f pt){
-        
-        if(pt.y > ofGetWidth()) return false;
+
+        if(pt.y > ofGetHeight()) return false;
         if(pt.y < 0) return false;
-        if(pt.x > ofGetHeight()) return false;
+        if(pt.x > ofGetWidth()) return false;
         if(pt.x < 0) return false;
         
         return true;

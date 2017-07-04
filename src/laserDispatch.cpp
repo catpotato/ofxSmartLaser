@@ -79,7 +79,7 @@ namespace Laser{
     }
     
     void Dispatch::update_polys(){
-        
+
         // slices off the edges of polygons against the bounding box
         sliced_polys = slice_off_edges(original_polys);
         
@@ -88,15 +88,15 @@ namespace Laser{
             
             // add spaces btwn polys
             spaced_projection = connect_the_dots(sliced_polys, params);
-
+            
             // update point pool
             point_pool.update(spaced_projection);
-            
+
             // resample
             resampled_projection = resample(spaced_projection, params, point_pool);
 
             // normalize
-            normalized_projection = normalize(resampled_projection, window_dimensions);
+            normalized_projection = normalize(resampled_projection, window_dimensions); 
 
         }
             

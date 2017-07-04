@@ -18,7 +18,7 @@ namespace Laser{
     float ease_func(float t){
         //float x = t*t;
         float x;
-        float exp = 2;
+        float exp = 4;
         if(t < .5){
             x = .5*pow(2*t, exp);
         }
@@ -170,7 +170,7 @@ namespace Laser{
             
             // look at the points remaining and find the closest one
             for(int j = 0; j < nn_polys.size(); j++){
-                
+
                 float distance = current_poly.get_starting_point().squareDistance(nn_polys[j].get_starting_point());
                 
                 if(distance < shortest_distance){

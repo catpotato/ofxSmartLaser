@@ -199,10 +199,18 @@ namespace Laser{
     
     
     void Bezier::translate(ofVec2f v){
-        p1 += v;
+        // in case it's just a vertex
+        if(p1 != ofVec2f(0,0)){
+            
+            p1 += v;
+            cp1+= v;
+            cp2+= v;
+        
+        }
+        
         p2 += v;
-        cp1+= v;
-        cp2+= v;
+        
+        
     
     }
                                 

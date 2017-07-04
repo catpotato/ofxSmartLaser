@@ -129,6 +129,8 @@ void ofxSVG::setupShape(struct svgtiny_shape * shape, ofPath & path){
 			i += 1;
 		}
 	}
+    
+    if(!polys.size()) polys.push_back(laser_poly);
 }
 
 const vector <ofPath> & ofxSVG::getPaths() const{
